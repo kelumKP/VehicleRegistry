@@ -9,7 +9,9 @@ namespace VehicleRegistry.Core.Models
     public class Category
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string CategoryName { get; set; }
+        public decimal RangeFrom { get; set; }
+        public decimal RangeTo { get; set; }
         public int IconId { get; set; }
 
     }
