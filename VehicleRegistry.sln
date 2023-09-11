@@ -22,19 +22,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebUI", "WebUI", "{92287A35-9B6B-4CC0-8DD6-55C2890BA905}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.DAL", "VehicleRegistry.DAL\VehicleRegistry.DAL.csproj", "{6B7FA813-94E9-4AA3-8980-93800628D89D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.DAL", "VehicleRegistry.DAL\VehicleRegistry.DAL.csproj", "{6B7FA813-94E9-4AA3-8980-93800628D89D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.WebAPI", "VehicleRegistry.WebAPI\VehicleRegistry.WebAPI.csproj", "{62AB745D-993D-4978-8C8F-8ACAA100B146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.WebAPI", "VehicleRegistry.WebAPI\VehicleRegistry.WebAPI.csproj", "{62AB745D-993D-4978-8C8F-8ACAA100B146}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.Application", "VehicleRegistry.Application\VehicleRegistry.Application.csproj", "{6B95A4A5-6B38-4E90-8300-AE9FE4590EA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Application", "VehicleRegistry.Application\VehicleRegistry.Application.csproj", "{6B95A4A5-6B38-4E90-8300-AE9FE4590EA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.Domain", "VehicleRegistry.Domain\VehicleRegistry.Domain.csproj", "{ED3D1A17-A705-4387-8993-D4CD8CD39E14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Core", "VehicleRegistry.Domain\VehicleRegistry.Core.csproj", "{ED3D1A17-A705-4387-8993-D4CD8CD39E14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.Blazor", "VehicleRegistry.Blazor\VehicleRegistry.Blazor.csproj", "{A06DB3BE-124C-4ACD-9527-FA3BB0F767C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Blazor", "VehicleRegistry.Blazor\VehicleRegistry.Blazor.csproj", "{A06DB3BE-124C-4ACD-9527-FA3BB0F767C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.Application.UnitTest", "VehicleRegistry.Application.UnitTest\VehicleRegistry.Application.UnitTest.csproj", "{48AA51CD-C0B8-4896-A98A-0DD95081A45D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Application.UnitTest", "VehicleRegistry.Application.UnitTest\VehicleRegistry.Application.UnitTest.csproj", "{48AA51CD-C0B8-4896-A98A-0DD95081A45D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.Application.IntegrationTest", "VehicleRegistry.Application.IntegrationTest\VehicleRegistry.Application.IntegrationTest.csproj", "{0A26C6B5-FB99-4C82-B455-585F7B744C4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Application.IntegrationTest", "VehicleRegistry.Application.IntegrationTest\VehicleRegistry.Application.IntegrationTest.csproj", "{0A26C6B5-FB99-4C82-B455-585F7B744C4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
