@@ -7,8 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Handlers\" />
+    <Compile Remove="Commands\**" />
+    <Compile Remove="Handlers\**" />
+    <EmbeddedResource Remove="Commands\**" />
+    <EmbeddedResource Remove="Handlers\**" />
+    <None Remove="Commands\**" />
+    <None Remove="Handlers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Icon\" />
+    <Folder Include="Category\" />
+    <Folder Include="Manufacturer\" />
+    <Folder Include="VehicleDetail\" />
   </ItemGroup>
 
 </Project>
