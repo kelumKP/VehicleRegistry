@@ -18,13 +18,10 @@
   <ItemGroup>
     <Folder Include="Category\Commands\DeleteCategory\" />
     <Folder Include="Category\Commands\UpdateCategory\" />
-    <Folder Include="Icon\Handler\" />
     <Folder Include="Icon\Command\" />
     <Folder Include="Icon\Query\" />
     <Folder Include="Manufacturer\Command\" />
-    <Folder Include="Manufacturer\Handler\" />
     <Folder Include="Manufacturer\Query\" />
-    <Folder Include="VehicleDetail\Handler\" />
     <Folder Include="VehicleDetail\Command\" />
     <Folder Include="VehicleDetail\Query\" />
   </ItemGroup>
