@@ -14,7 +14,7 @@ namespace VehicleRegistry.DAL
 
         public DbSet<Icon> Icons => Set<Icon>();
         public DbSet<Category> Categories => Set<Category>();
-        public DbSet<Manufacturer> Manufacturerers => Set<Manufacturer>();
+        public DbSet<Manufacturer> Manufacturers => Set<Manufacturer>();
         public DbSet<Owner> Owners => Set<Owner>();
         public DbSet<VehicleDetail> VehicleDetails => Set<VehicleDetail>();
 

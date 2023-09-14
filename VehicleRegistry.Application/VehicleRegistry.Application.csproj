@@ -18,12 +18,12 @@
   <ItemGroup>
     <Folder Include="Category\Commands\DeleteCategory\" />
     <Folder Include="Category\Commands\UpdateCategory\" />
-    <Folder Include="Icon\Command\" />
-    <Folder Include="Icon\Query\" />
-    <Folder Include="Manufacturer\Command\" />
-    <Folder Include="Manufacturer\Query\" />
-    <Folder Include="VehicleDetail\Command\" />
-    <Folder Include="VehicleDetail\Query\" />
+    <Folder Include="Icon\Commands\DeleteIcon\" />
+    <Folder Include="Icon\Commands\UpdateIcon\" />
+    <Folder Include="Manufacturer\Commands\DeleteManufacturer\" />
+    <Folder Include="Manufacturer\Commands\UpdateManufacturer\" />
+    <Folder Include="VehicleDetail\Commands\DeleteVehicleDetail\" />
+    <Folder Include="VehicleDetail\Commands\UpdateVehicleDetail\" />
   </ItemGroup>
 
   <ItemGroup>
