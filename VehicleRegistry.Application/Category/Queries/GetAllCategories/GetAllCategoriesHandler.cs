@@ -9,16 +9,27 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Category.Queries.GetAllCategories
 {
-    public class GetAllCategoriesHandler : IRequestHandler<GetAllCategoriesQuery, List<Core.Models.Category>>
+    public class GetAllCategoriesHandler : IRequestHandler<GetAllCategoriesQuery, List<CategoryDetailsDto>>
     {
         private readonly DataContext _ctx;
         public GetAllCategoriesHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
-        public async Task<List<Core.Models.Category>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<List<CategoryDetailsDto>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            return await _ctx.Categories.ToListAsync();
+            var query = from category in _ctx.Categories
+                        join icon in _ctx.Icons on category.IconId equals icon.Id into iconGroup
+                        select new CategoryDetailsDto
+                        {
+                            Id = category.Id,
+                            CategoryName = category.CategoryName,
+                            RangeFrom = category.RangeFrom,
+                            RangeTo = category.RangeTo,
+                            Icon = iconGroup.FirstOrDefault() != null ? iconGroup.FirstOrDefault().Path : null // Check for null and then access Path
+                        };
+
+            return await query.ToListAsync(cancellationToken);
         }
     }
 }

@@ -29,7 +29,8 @@ else
                     <td>@vehicleDetail.NameOfManufacturer </td>
                     <td>@vehicleDetail.YearOfManufacture </td>
                     <td>@vehicleDetail.Weight </td>
-                    <td>@vehicleDetail.Path </td>
+                    <td> <span>@(new MarkupString(vehicleDetail.Path))</span></td>
+
                 </tr>
             }
         </tbody>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.Category.Queries.GetAllCategories
 {
-    public class GetAllCategoriesQuery : IRequest<List<Core.Models.Category>>
+    public class GetAllCategoriesQuery : IRequest<List<CategoryDetailsDto>>
     {
     }
 }

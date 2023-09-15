@@ -1,0 +1,41 @@
+﻿@page "/icons"
+
+@inject HttpClient Http
+
+<h3>List of Icons</h3>
+
+@if (Icons == null)
+{
+    <p><em> Loading... </em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Icon</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var icon in Icons)
+            {
+                <tr>
+                    <td>@icon.Id</td>
+                    <td>@icon.Name </td>
+                    <td> <span>@(new MarkupString(icon.Path))</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Icon> Icons;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Icons = await Http.GetFromJsonAsync<List<Icon>>("API/Icon");
+    }
+}
