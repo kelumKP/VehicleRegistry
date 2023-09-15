@@ -19,6 +19,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: "AllowBlazorOrigin", builder =>
+    {
+        builder.WithOrigins("https://localhost:7098");
+    });
+});
+
 // Getting the solution directory path from local folder
 static string TryGetSolutionDirectoryInfo(string currentPath = null)
 {
@@ -74,6 +81,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();   
+
+app.UseCors("AllowBlazorOrigin");
 
 app.UseAuthorization();
 

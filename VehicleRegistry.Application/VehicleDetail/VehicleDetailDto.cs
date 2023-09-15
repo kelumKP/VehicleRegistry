@@ -15,5 +15,7 @@ namespace VehicleRegistry.Application.VehicleDetail
         public string NameOfManufacturer { get; set; }
         public string Path { get; set; }
         public string CategoryName { get; set; }
+        public decimal Weight { get; set; }
+
     }
 }

@@ -1,0 +1,45 @@
+﻿@page "/vehiclesdetails"
+
+@inject HttpClient Http
+
+<h3>List of Vehicle Details</h3>
+
+@if (VehiclesDetails == null)
+{
+    <p><em> Loading... </em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Owner’s Name</th>
+                <th>Manufacturer</th>
+                <th>Year of manufacture</th>
+                <th>Weight in kilograms</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var vehicleDetail in VehiclesDetails)
+            {
+                <tr>
+                    <td>@vehicleDetail.FirstName @vehicleDetail.LastName</td>
+                    <td>@vehicleDetail.NameOfManufacturer </td>
+                    <td>@vehicleDetail.YearOfManufacture </td>
+                    <td>@vehicleDetail.Weight </td>
+                    <td>@vehicleDetail.Path </td>
+                </tr>
+            }
+        </tbody>
+    </table>    
+}
+
+@code {
+    private List<VehicleDetailDto> VehiclesDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        VehiclesDetails = await Http.GetFromJsonAsync<List<VehicleDetailDto>>("API/VehicleDetail");
+    }
+}
