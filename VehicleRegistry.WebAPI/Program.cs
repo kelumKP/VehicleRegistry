@@ -2,6 +2,12 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using VehicleRegistry.Application.Category.Commands.CreateCategory;
 using VehicleRegistry.Application.Category.Queries.GetAllCategories;
+using VehicleRegistry.Application.Icon.Commands.CreateIcon;
+using VehicleRegistry.Application.Icon.Queries.GetAllIcons;
+using VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer;
+using VehicleRegistry.Application.Manufacturer.Queries.GetAllManufacturers;
+using VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail;
+using VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail;
 using VehicleRegistry.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +54,15 @@ builder.Services.AddDbContext<DataContext>(options => {
 
 builder.Services.AddMediatR(typeof(GetAllCategoriesQuery));
 builder.Services.AddMediatR(typeof(CreateCategoryCommand));
+
+builder.Services.AddMediatR(typeof(GetAllIconsQuery));
+builder.Services.AddMediatR(typeof(CreateIconCommand));
+
+builder.Services.AddMediatR(typeof(GetAllManufacturersQuery));
+builder.Services.AddMediatR(typeof(CreateManufacturerCommand));
+
+builder.Services.AddMediatR(typeof(GetAllVehiclesDetailsQuery));
+builder.Services.AddMediatR(typeof(CreateVehicleDetailCommand));
 
 var app = builder.Build();
 

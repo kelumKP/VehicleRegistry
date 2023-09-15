@@ -14,5 +14,8 @@ namespace VehicleRegistry.Core.Models
         public decimal RangeTo { get; set; }
         public int IconId { get; set; }
 
+        // Add navigation property to access related Icon entity
+        public Icon Icon { get; set; }
+
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer;
 using VehicleRegistry.Application.Manufacturer.Queries.GetAllManufacturers;
+using VehicleRegistry.Application.VehicleDetail;
 using VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail;
 using VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail;
 using VehicleRegistry.Core.Models;
@@ -28,9 +29,9 @@ namespace VehicleRegistry.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVehicleDetail([FromBody] VehicleDetail vehicleDetail)
+        public async Task<IActionResult> CreateVehicleDetail([FromBody] CreateVehicleDetailDto vehicleDetailDto)
         {
-            var command = new CreateVehicleDetailCommand() { VehicleDetail = vehicleDetail };
+            var command = new CreateVehicleDetailCommand() { NewVehicleDetail = vehicleDetailDto };
 
             var result = await _mediator.Send(command);
 

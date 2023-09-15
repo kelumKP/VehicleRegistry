@@ -15,5 +15,10 @@ namespace VehicleRegistry.Core.Models
         public decimal Weight { get; set; }
         public string YearOfManufacture { get; set; }
 
+        // Add navigation properties
+        public Manufacturer Manufacturer { get; set; }
+        public Category Category { get; set; }
+        public Owner Owner { get; set; }
+
     }
 }

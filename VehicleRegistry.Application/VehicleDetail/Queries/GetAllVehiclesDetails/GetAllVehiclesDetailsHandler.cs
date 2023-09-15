@@ -10,16 +10,34 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail
 {
-    public class GetAllVehiclesDetailsHandler : IRequestHandler<GetAllVehiclesDetailsQuery, List<Core.Models.VehicleDetail>>
+    public class GetAllVehiclesDetailsHandler : IRequestHandler<GetAllVehiclesDetailsQuery, List<VehicleDetailDto>>
     {
         private readonly DataContext _ctx;
         public GetAllVehiclesDetailsHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
-        public async Task<List<Core.Models.VehicleDetail>> Handle(GetAllVehiclesDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<List<VehicleDetailDto>> Handle(GetAllVehiclesDetailsQuery request, CancellationToken cancellationToken)
         {
-            return await _ctx.VehicleDetails.ToListAsync();
+            var vehicleDetails = await _ctx.VehicleDetails
+                .Include(vd => vd.Manufacturer)
+                .Include(vd => vd.Category)
+                .Include(vd => vd.Owner)
+                .Include(vd => vd.Category.Icon) // Include Icon from Category
+                .Select(vd => new VehicleDetailDto
+                {
+                    Id = vd.Id,
+                    YearOfManufacture = vd.YearOfManufacture,
+                    FirstName = vd.Owner.FirstName,
+                    LastName = vd.Owner.LastName,
+                    NameOfManufacturer = vd.Manufacturer.NameOfManufacturer,
+                    Path = vd.Category.Icon.Path,
+                    CategoryName = vd.Category.CategoryName
+                })
+                .ToListAsync();
+
+            return vehicleDetails;
+
         }
     }
 }
