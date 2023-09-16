@@ -21,9 +21,7 @@ namespace VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail
         {
             var vehicleDetails = await _ctx.VehicleDetails
                 .Include(vd => vd.Manufacturer)
-                .Include(vd => vd.Category)
                 .Include(vd => vd.Owner)
-                .Include(vd => vd.Category.Icon) // Include Icon from Category
                 .Select(vd => new VehicleDetailDto
                 {
                     VehicleDetailId = vd.Id,
@@ -31,8 +29,8 @@ namespace VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail
                     FirstName = vd.Owner.FirstName,
                     LastName = vd.Owner.LastName,
                     NameOfManufacturer = vd.Manufacturer.NameOfManufacturer,
-                    Icon = vd.Category.Icon.Path,
-                    Weight = vd.Weight
+                    Weight = vd.Weight,
+                    Icon = _ctx.Categories.FirstOrDefault(c => c.RangeFrom <= vd.Weight && (c.RangeTo == null || c.RangeTo >= vd.Weight)).Icon.Path
                 })
                 .ToListAsync();
 

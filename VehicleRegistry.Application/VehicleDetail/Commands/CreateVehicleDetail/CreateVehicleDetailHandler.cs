@@ -41,7 +41,6 @@ namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
             var vehicleDetail = new Core.Models.VehicleDetail
             {
                 ManufacturerId = request.NewVehicleDetail.ManufacturerId,
-                CategoryId = category.Id,
                 OwnerId = owner.Id, // Assign the created owner's ID
                 Weight = request.NewVehicleDetail.Weight,
                 YearOfManufacture = request.NewVehicleDetail.YearOfManufacture

@@ -10,14 +10,12 @@ namespace VehicleRegistry.Core.Models
     {
         public int Id { get; set; }
         public int ManufacturerId { get; set; }
-        public int CategoryId { get; set; }
         public int OwnerId { get; set; }
         public decimal Weight { get; set; }
         public string YearOfManufacture { get; set; }
 
         // Add navigation properties
         public Manufacturer Manufacturer { get; set; }
-        public Category Category { get; set; }
         public Owner Owner { get; set; }
 
     }

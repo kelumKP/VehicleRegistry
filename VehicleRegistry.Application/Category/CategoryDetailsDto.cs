@@ -13,7 +13,7 @@ namespace VehicleRegistry.Application.Category
         public int Id { get; set; }
         public string CategoryName { get; set; }
         public decimal RangeFrom { get; set; }
-        public decimal RangeTo { get; set; }
+        public decimal? RangeTo { get; set; }
         public string? Icon { get; set; }
     }
 }
