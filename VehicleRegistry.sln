@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Application.IntegrationTest", "VehicleRegistry.Application.IntegrationTest\VehicleRegistry.Application.IntegrationTest.csproj", "{0A26C6B5-FB99-4C82-B455-585F7B744C4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRegistry.Blazor", "VehicleRegistry.Blazor\VehicleRegistry.Blazor.csproj", "{9DF0F7E9-3C34-4F11-9E6D-E93C8416DBE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistry.Blazor", "VehicleRegistry.Blazor\VehicleRegistry.Blazor.csproj", "{9DF0F7E9-3C34-4F11-9E6D-E93C8416DBE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

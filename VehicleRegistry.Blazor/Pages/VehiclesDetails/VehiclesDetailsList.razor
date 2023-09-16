@@ -8,12 +8,17 @@
 
 <h3>List of Vehicle Details</h3>
 
+
+
+
 @if (VehiclesDetails == null)
 {
     <p><em> Loading... </em></p>
 }
 else
 {
+    <a href="/vehiclesdetails/add" class="btn btn-primary btn-sm">Add New</a>
+
     <table class="table">
         <thead>
             <tr>
@@ -22,6 +27,7 @@ else
                 <th>Year of Manufacture</th>
                 <th>Weight in Kilograms</th>
                 <th>Category</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -33,11 +39,14 @@ else
                     <td>@vehicleDetail.YearOfManufacture </td>
                     <td>@vehicleDetail.Weight </td>
                     <td> <span>@(new MarkupString(vehicleDetail.Path))</span></td>
-
+                    <td>
+                        <a href="/vehiclesdetails/edit/@vehicleDetail.VehicleDetailId" class="btn btn-success btn-sm">Edit</a>
+                        <a class="btn btn-danger btn-sm" @onclick="async ()=> await Delete(vehicleDetail)">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>
-    </table>    
+    </table>
 }
 
 @code {

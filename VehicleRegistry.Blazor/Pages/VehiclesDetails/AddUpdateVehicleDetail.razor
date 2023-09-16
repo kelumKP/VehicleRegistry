@@ -1,0 +1,116 @@
+﻿@page "/vehiclesdetails/add"
+@page "/vehiclesdetails/edit/{VehicleDetailId:int}"
+@using Services
+@using Services.VehicleDetail
+@inject IBaseService<VehicleDetailDto> vehicleDetailService
+@inject IJSRuntime jsRuntime
+@inject HttpClient Http
+@inject IBaseService<CategoryDetailsDto> categoryService
+@inject IBaseService<Manufacturer> manufacturerService
+
+<h3>@Title</h3>
+<a href="/vehiclesdetails" class="btn btn-outline-dark">Show All</a>
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="@vehicleDetail" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="Name">First Name</label>
+                <InputText class="form-control" @bind-Value="vehicleDetail.FirstName" />
+                <ValidationMessage For="@(()=>vehicleDetail.FirstName)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Last Name</label>
+                <InputText class="form-control" @bind-Value="vehicleDetail.LastName" />
+                <ValidationMessage For="@(()=>vehicleDetail.LastName)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Name">Year of Manufacture</label>
+                <InputText class="form-control" @bind-Value="vehicleDetail.YearOfManufacture" />
+                <ValidationMessage For="@(()=>vehicleDetail.YearOfManufacture)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Name">Weight</label>
+                <InputNumber class="form-control" @bind-Value="vehicleDetail.Weight" />
+                <ValidationMessage For="@(()=>vehicleDetail.Weight)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Category">Category</label>
+                <InputSelect class="form-control" @bind-Value="vehicleDetail.CategoryId">
+                    @foreach (var category in categoryOptions)
+                    {
+                        <option value="@category.Id">@category.CategoryName</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>vehicleDetail.CategoryId)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Manufacturer">Manufacturer</label>
+                <InputSelect class="form-control" @bind-Value="vehicleDetail.ManufacturerId">
+                    @foreach (var manufacturer in manufacturerOptions)
+                    {
+                        <option value="@manufacturer.Id">@manufacturer.NameOfManufacturer</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>vehicleDetail.ManufacturerId)" />
+            </div>
+
+
+
+            <div class="my-2">
+                @message
+            </div>
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int VehicleDetailId { get; set; }
+    private string message = string.Empty;
+    VehicleDetailDto vehicleDetail = new();
+    private string Title = "Add Vehicle Detail";
+    private List<CategoryDetailsDto> categoryOptions = new List<CategoryDetailsDto>();
+    private List<Manufacturer> manufacturerOptions = new List<Manufacturer>();
+
+    private void Save()
+    {
+        message = "wait...";
+        if (vehicleDetailService.AddUpdate(vehicleDetail))
+        {
+            message = "Sucessfully added";
+            vehicleDetail = new();
+        }
+        else
+        {
+            message = "Could not saved";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (VehicleDetailId > 0)
+        {
+            Title = "Update Vehicle Detail";
+            vehicleDetail = vehicleDetailService.FindById(VehicleDetailId);
+        }
+
+        // Fetch the list of categories
+        //categoryOptions = await categoryService.GetAllAsync();
+
+        // Fetch the list of categories
+        manufacturerOptions = await manufacturerService.GetAllAsync();
+
+        base.OnInitialized();
+    }
+}
