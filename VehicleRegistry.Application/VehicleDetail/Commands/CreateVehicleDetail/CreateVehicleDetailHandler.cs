@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +33,15 @@ namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
             // Save changes to the database to get the generated OwnerId
             await _ctx.SaveChangesAsync();
 
+            // Find the category where the weight falls within the range
+            var category = await _ctx.Categories
+                .FirstOrDefaultAsync(c => request.NewVehicleDetail.Weight >= c.RangeFrom && request.NewVehicleDetail.Weight <= c.RangeTo);
+
             // Create a new VehicleDetail entity
             var vehicleDetail = new Core.Models.VehicleDetail
             {
                 ManufacturerId = request.NewVehicleDetail.ManufacturerId,
-                CategoryId = request.NewVehicleDetail.CategoryId,
+                CategoryId = category.Id,
                 OwnerId = owner.Id, // Assign the created owner's ID
                 Weight = request.NewVehicleDetail.Weight,
                 YearOfManufacture = request.NewVehicleDetail.YearOfManufacture
@@ -55,7 +60,6 @@ namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
                 FirstName = owner.FirstName,
                 LastName = owner.LastName,
                 ManufacturerId = vehicleDetail.ManufacturerId,
-                CategoryId = vehicleDetail.CategoryId,
                 Weight = vehicleDetail.Weight,
                 YearOfManufacture = vehicleDetail.YearOfManufacture
             };

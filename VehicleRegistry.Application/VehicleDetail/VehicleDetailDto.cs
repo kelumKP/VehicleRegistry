@@ -19,9 +19,8 @@ namespace VehicleRegistry.Application.VehicleDetail
 
         [Required]
         public string LastName { get; set; }
-        public string NameOfManufacturer { get; set; }
-        public string Path { get; set; }
-        public string CategoryName { get; set; }
+        public string? NameOfManufacturer { get; set; }
+        public string? Icon { get; set; }
 
         [Required]
         public decimal Weight { get; set; }
@@ -29,8 +28,6 @@ namespace VehicleRegistry.Application.VehicleDetail
         [Required]
         public int ManufacturerId { get; set; }
 
-        [Required]
-        public int CategoryId { get; set; }
 
 
     }

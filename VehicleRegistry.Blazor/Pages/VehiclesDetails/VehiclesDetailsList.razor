@@ -26,7 +26,7 @@ else
                 <th>Manufacturer</th>
                 <th>Year of Manufacture</th>
                 <th>Weight in Kilograms</th>
-                <th>Category</th>
+                <th>Category Icon</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -38,7 +38,7 @@ else
                     <td>@vehicleDetail.NameOfManufacturer </td>
                     <td>@vehicleDetail.YearOfManufacture </td>
                     <td>@vehicleDetail.Weight </td>
-                    <td> <span>@(new MarkupString(vehicleDetail.Path))</span></td>
+                    <td> <span>@(new MarkupString(vehicleDetail.Icon))</span></td>
                     <td>
                         <a href="/vehiclesdetails/edit/@vehicleDetail.VehicleDetailId" class="btn btn-success btn-sm">Edit</a>
                         <a class="btn btn-danger btn-sm" @onclick="async ()=> await Delete(vehicleDetail)">Delete</a>

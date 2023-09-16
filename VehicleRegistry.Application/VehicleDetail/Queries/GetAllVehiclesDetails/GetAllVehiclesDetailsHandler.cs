@@ -31,8 +31,7 @@ namespace VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail
                     FirstName = vd.Owner.FirstName,
                     LastName = vd.Owner.LastName,
                     NameOfManufacturer = vd.Manufacturer.NameOfManufacturer,
-                    Path = vd.Category.Icon.Path,
-                    CategoryName = vd.Category.CategoryName,
+                    Icon = vd.Category.Icon.Path,
                     Weight = vd.Weight
                 })
                 .ToListAsync();

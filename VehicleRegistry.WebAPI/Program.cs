@@ -20,9 +20,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options => {
-    options.AddPolicy(name: "AllowBlazorOrigin", builder =>
+    options.AddPolicy("AllowBlazorOrigin", builder =>
     {
-        builder.WithOrigins("https://localhost:7098");
+        builder.WithOrigins("https://localhost:7098")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -71,6 +73,8 @@ builder.Services.AddMediatR(typeof(CreateManufacturerCommand));
 builder.Services.AddMediatR(typeof(GetAllVehiclesDetailsQuery));
 builder.Services.AddMediatR(typeof(CreateVehicleDetailCommand));
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -80,11 +84,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowBlazorOrigin");
+
 app.UseHttpsRedirection();
 
 app.UseRouting();   
-
-app.UseCors("AllowBlazorOrigin");
 
 app.UseAuthorization();
 

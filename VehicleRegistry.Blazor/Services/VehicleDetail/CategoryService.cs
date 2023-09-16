@@ -13,7 +13,8 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
         {
             _httpClient = httpClient;
         }
-        public bool AddUpdate(CategoryDetailsDto item)
+
+        public Task<bool> AddUpdate(CategoryDetailsDto item)
         {
             throw new NotImplementedException();
         }

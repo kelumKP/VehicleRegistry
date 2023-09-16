@@ -3,6 +3,8 @@ using VehicleRegistry.Application.Category;
 using VehicleRegistry.Application.VehicleDetail;
 using static System.Net.WebRequestMethods;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text;
 
 namespace VehicleRegistry.Blazor.Services.VehicleDetail
 {
@@ -14,10 +16,48 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
         {
             _httpClient = httpClient;
         }
-        public bool AddUpdate(VehicleDetailDto vehicleDetail)
+        public async Task<bool> AddUpdate(VehicleDetailDto vehicleDetail)
         {
-            // Implement the AddUpdate logic here
-            return true; // Replace with your logic
+            try
+            {
+                // Serialize the VehicleDetailDto as JSON
+                var vehicleDetailJson = JsonSerializer.Serialize(vehicleDetail);
+
+                // Create a StringContent with the JSON data
+                var content = new StringContent(vehicleDetailJson, Encoding.UTF8, "application/json");
+
+                // Determine whether this is an add (POST) or update (PUT) operation based on whether the VehicleDetailDto has an ID.
+                HttpResponseMessage response;
+                if (vehicleDetail.VehicleDetailId > 0)
+                {
+                    // This is an update, so use PUT and include the ID in the URL
+                    response = await _httpClient.PutAsync($"API/VehicleDetail/{vehicleDetail.VehicleDetailId}", content);
+                }
+                else
+                {
+                    // This is an add, so use POST
+                    response = await _httpClient.PostAsync("API/VehicleDetail/", content);
+                }
+
+                // Check if the request was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    // Handle the error case, for example, log or throw an exception
+                    // You might want to return false or handle it differently based on your application's needs
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the HTTP request
+                // You might want to log the exception or throw it further up
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return false;
+            }
         }
 
         public bool Delete(int id)

@@ -40,17 +40,6 @@
             </div>
 
             <div class="form-group">
-                <label for="Category">Category</label>
-                <InputSelect class="form-control" @bind-Value="vehicleDetail.CategoryId">
-                    @foreach (var category in categoryOptions)
-                    {
-                        <option value="@category.Id">@category.CategoryName</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(()=>vehicleDetail.CategoryId)" />
-            </div>
-
-            <div class="form-group">
                 <label for="Manufacturer">Manufacturer</label>
                 <InputSelect class="form-control" @bind-Value="vehicleDetail.ManufacturerId">
                     @foreach (var manufacturer in manufacturerOptions)
@@ -83,17 +72,17 @@
     private List<CategoryDetailsDto> categoryOptions = new List<CategoryDetailsDto>();
     private List<Manufacturer> manufacturerOptions = new List<Manufacturer>();
 
-    private void Save()
+    private async Task Save()
     {
         message = "wait...";
-        if (vehicleDetailService.AddUpdate(vehicleDetail))
+        if (await vehicleDetailService.AddUpdate(vehicleDetail))
         {
-            message = "Sucessfully added";
-            vehicleDetail = new();
+            message = "Successfully added";
+            vehicleDetail = new VehicleDetailDto(); // Use new VehicleDetailDto() to create a new instance
         }
         else
         {
-            message = "Could not saved";
+            message = "Could not save";
         }
     }
 
