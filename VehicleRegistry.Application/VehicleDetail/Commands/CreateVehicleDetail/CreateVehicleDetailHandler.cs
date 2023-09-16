@@ -10,14 +10,14 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
 {
-    internal class CreateVehicleDetailHandler : IRequestHandler<CreateVehicleDetailCommand, CreateVehicleDetailDto>
+    internal class CreateVehicleDetailHandler : IRequestHandler<CreateVehicleDetailCommand, VehicleDetailDto>
     {
         private readonly DataContext _ctx;
         public CreateVehicleDetailHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
-        public async Task<CreateVehicleDetailDto> Handle(CreateVehicleDetailCommand request, CancellationToken cancellationToken)
+        public async Task<VehicleDetailDto> Handle(CreateVehicleDetailCommand request, CancellationToken cancellationToken)
         {
             // Create a new Owner entity from the provided FirstName
             var owner = new Owner
@@ -49,7 +49,7 @@ namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
             await _ctx.SaveChangesAsync();
 
             // Create a response DTO with the details of the newly created VehicleDetail
-            var responseDto = new CreateVehicleDetailDto
+            var responseDto = new VehicleDetailDto
             {
                 VehicleDetailId = vehicleDetail.Id,
                 FirstName = owner.FirstName,

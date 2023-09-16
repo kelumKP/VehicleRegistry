@@ -29,7 +29,7 @@ namespace VehicleRegistry.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVehicleDetail([FromBody] CreateVehicleDetailDto vehicleDetailDto)
+        public async Task<IActionResult> CreateVehicleDetail([FromBody] VehicleDetailDto vehicleDetailDto)
         {
             var command = new CreateVehicleDetailCommand() { NewVehicleDetail = vehicleDetailDto };
 

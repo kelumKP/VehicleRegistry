@@ -8,7 +8,7 @@ namespace VehicleRegistry.Application.VehicleDetail
 {
     public class VehicleDetailDto
     {
-        public int Id { get; set; }
+        public int VehicleDetailId { get; set; }
         public string YearOfManufacture { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -16,6 +16,9 @@ namespace VehicleRegistry.Application.VehicleDetail
         public string Path { get; set; }
         public string CategoryName { get; set; }
         public decimal Weight { get; set; }
+        public int ManufacturerId { get; set; }
+        public int CategoryId { get; set; }
+
 
     }
 }

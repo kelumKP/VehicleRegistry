@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
 {
-    public class CreateVehicleDetailCommand : IRequest<CreateVehicleDetailDto>
+    public class CreateVehicleDetailCommand : IRequest<VehicleDetailDto>
     {
-        public CreateVehicleDetailDto NewVehicleDetail { get; set; }
+        public VehicleDetailDto NewVehicleDetail { get; set; }
     }
 }

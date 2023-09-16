@@ -26,7 +26,7 @@ namespace VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail
                 .Include(vd => vd.Category.Icon) // Include Icon from Category
                 .Select(vd => new VehicleDetailDto
                 {
-                    Id = vd.Id,
+                    VehicleDetailId = vd.Id,
                     YearOfManufacture = vd.YearOfManufacture,
                     FirstName = vd.Owner.FirstName,
                     LastName = vd.Owner.LastName,

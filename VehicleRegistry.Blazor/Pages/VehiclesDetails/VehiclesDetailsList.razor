@@ -1,6 +1,9 @@
 ﻿@page "/"
 @page "/vehiclesdetails"
-
+@using Services
+@using Services.VehicleDetail
+@inject IBaseService<VehicleDetailDto> vehicleDetailService
+@inject IJSRuntime jsRuntime
 @inject HttpClient Http
 
 <h3>List of Vehicle Details</h3>
@@ -16,13 +19,13 @@ else
             <tr>
                 <th>Owner’s Name</th>
                 <th>Manufacturer</th>
-                <th>Year of manufacture</th>
-                <th>Weight in kilograms</th>
+                <th>Year of Manufacture</th>
+                <th>Weight in Kilograms</th>
                 <th>Category</th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var vehicleDetail in VehiclesDetails)
+            @foreach (var vehicleDetail in VehiclesDetails)
             {
                 <tr>
                     <td>@vehicleDetail.FirstName @vehicleDetail.LastName</td>
@@ -38,10 +41,25 @@ else
 }
 
 @code {
+  
     private List<VehicleDetailDto> VehiclesDetails;
+
+    private async Task Delete(VehicleDetailDto vehicleDetail)
+    {
+        bool confirmed = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure????");
+        if (confirmed)
+        {
+            if (vehicleDetailService.Delete(vehicleDetail.VehicleDetailId))
+            {
+                VehiclesDetails.Remove(vehicleDetail);
+            }
+
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        VehiclesDetails = await Http.GetFromJsonAsync<List<VehicleDetailDto>>("API/VehicleDetail");
+        VehiclesDetails = await vehicleDetailService.GetAllAsync();
+        base.OnInitialized();
     }
 }
