@@ -9,7 +9,7 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Category.Queries.GetCategoryById
 {
-    public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdCommand, CategoryDetailsDto>
+    public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, CategoryDetailsDto>
     {
         private readonly DataContext _ctx;
         public GetCategoryByIdHandler(DataContext ctx)
@@ -17,7 +17,7 @@ namespace VehicleRegistry.Application.Category.Queries.GetCategoryById
             _ctx = ctx;
         }
 
-        public async Task<CategoryDetailsDto> Handle(GetCategoryByIdCommand request, CancellationToken cancellationToken)
+        public async Task<CategoryDetailsDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             var categoryId = request.CategoryId;
 

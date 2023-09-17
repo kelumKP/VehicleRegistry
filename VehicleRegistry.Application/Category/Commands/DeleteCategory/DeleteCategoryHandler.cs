@@ -9,7 +9,7 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
 {
-    public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, List<CategoryDetailsDto>>
+    public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, bool>
     {
         private readonly DataContext _ctx;
 
@@ -18,7 +18,7 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
             _ctx = ctx;
         }
 
-        public async Task<List<CategoryDetailsDto>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
             // Retrieve the category to be deleted from the database
             var categoryToDelete = await _ctx.Categories.FindAsync(request.CategoryId);
@@ -74,17 +74,14 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
                     // Save changes to the database to persist the updated category ranges
                     await _ctx.SaveChangesAsync();
                 }
+
+                // Return true to indicate successful deletion
+                return true;
             }
 
-            // Return the updated list of categories (you may need to convert them to DTOs)
-            var updatedCategories = _ctx.Categories
-                .Select(category => new CategoryDetailsDto
-                {
-                    // Map properties accordingly
-                })
-                .ToList();
-
-            return updatedCategories;
+            // Return false to indicate that the category was not found and nothing was deleted
+            return false;
         }
+
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.Category.Queries.GetCategoryById
 {
-    public class GetCategoryByIdCommand : IRequest<CategoryDetailsDto>
+    public class GetCategoryByIdQuery : IRequest<CategoryDetailsDto>
     {
         public int CategoryId { get; set; }
     }
