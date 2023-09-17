@@ -1,12 +1,12 @@
 ﻿using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
-using VehicleRegistry.DAL;
-using VehicleRegistry.Core.Models;
+using VehicleRegistry.Application.Category.Commands.CreateCategory;
 using VehicleRegistry.Application.Category.Services;
 using VehicleRegistry.Application.Category;
+using VehicleRegistry.DAL;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using VehicleRegistry.Core.Models;
 
-namespace VehicleRegistry.Application.Category.Commands.CreateCategory
+namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
 {
     public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, CategoryDetailsDto>
     {
@@ -33,8 +33,14 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
                 })
                 .ToList();
 
+            // Find the maximum RangeTo value among existing categories
+            decimal? maxRangeTo = existingCategories.Max(c => c.RangeTo);
+
+            // Calculate the new RangeFrom value
+            decimal newRangeFrom = maxRangeTo != null ? maxRangeTo.Value + 0.01m : 0.01m;
+
             // Check if the new category is valid
-            var isValid = _categoryValidationService.IsCategoryValidForUpdate(existingCategories, request.NewCategory, null);
+            var isValid = _categoryValidationService.IsCategoryValidForInsert(existingCategories, request.NewCategory);
 
             if (isValid)
             {
@@ -42,10 +48,26 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
                 var newCategory = new Core.Models.Category
                 {
                     CategoryName = request.NewCategory.CategoryName,
-                    RangeFrom = request.NewCategory.RangeFrom,
-                    RangeTo = request.NewCategory.RangeTo, // Assign directly as decimal
+                    RangeFrom = newRangeFrom,
+                    RangeTo = request.NewCategory.RangeTo,
                     IconId = 1 // Set the IconId as needed
                 };
+
+                // Update RangeTo for the next category, if it exists
+                var nextCategory = existingCategories
+                    .Where(c => c.RangeFrom > newCategory.RangeTo)
+                    .OrderBy(c => c.RangeFrom)
+                    .FirstOrDefault();
+
+                if (nextCategory != null)
+                {
+                    newCategory.RangeTo = nextCategory.RangeFrom - 0.01m;
+                }
+                else
+                {
+                    // If there's no next category, set RangeTo to NULL
+                    newCategory.RangeTo = null;
+                }
 
                 _ctx.Categories.Add(newCategory);
                 await _ctx.SaveChangesAsync();
@@ -56,8 +78,8 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
                     CategoryId = newCategory.Id,
                     CategoryName = newCategory.CategoryName,
                     RangeFrom = newCategory.RangeFrom,
-                    RangeTo = newCategory.RangeTo, // Assign directly as decimal
-                    Icon = request.NewCategory.Icon  // Assuming Icon is a string in CategoryDetailsDto
+                    RangeTo = newCategory.RangeTo,
+                    Icon = request.NewCategory.Icon // Assuming Icon is a string in CategoryDetailsDto
                 };
 
                 return categoryDto;
@@ -69,4 +91,8 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
             return null; // Return null if the category is not valid
         }
     }
+
+
 }
+
+

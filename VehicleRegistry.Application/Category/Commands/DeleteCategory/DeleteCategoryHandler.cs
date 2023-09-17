@@ -51,23 +51,23 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
 
                         if (i == 0)
                         {
-                            currentCategory.RangeFrom = 0; // Assuming the first category starts from 0
+                            currentCategory.RangeFrom = 0.01m; // Set the lowest RangeFrom value
                         }
                         else
                         {
                             var previousCategory = remainingCategories[i - 1];
-                            currentCategory.RangeFrom = previousCategory.RangeTo ?? 0; // Start from the previous category's RangeTo or 0 if null
+                            currentCategory.RangeFrom = previousCategory.RangeTo.GetValueOrDefault(0) + 0.01m; // Start from the previous category's RangeTo or 0 if null
                         }
 
                         // Update RangeTo
                         if (i == remainingCategories.Count - 1)
                         {
-                            currentCategory.RangeTo = null; // Last category may have no upper bound
+                            currentCategory.RangeTo = null; // Set the maximum RangeTo value to NULL for the last category
                         }
                         else
                         {
                             var nextCategory = remainingCategories[i + 1];
-                            currentCategory.RangeTo = nextCategory.RangeFrom - 1; // Set RangeTo to cover the gap between categories
+                            currentCategory.RangeTo = nextCategory.RangeFrom - 0.01m; // Set RangeTo to cover the gap between categories
                         }
                     }
 

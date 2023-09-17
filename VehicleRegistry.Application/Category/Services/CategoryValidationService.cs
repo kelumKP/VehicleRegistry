@@ -8,6 +8,32 @@ namespace VehicleRegistry.Application.Category.Services
 {
     public class CategoryValidationService : ICategoryValidationService
     {
+        public bool IsCategoryValidForInsert(List<CategoryDetailsDto> existingCategories, CategoryDetailsDto newCategory)
+        {
+            // Check if the new category overlaps with any existing category
+            foreach (var existingCategory in existingCategories)
+            {
+                if (newCategory.RangeTo == null)
+                {
+                    // If the new category has no upper bound (RangeTo is null),
+                    // it should not overlap with any existing category
+                    if (newCategory.RangeFrom >= existingCategory.RangeFrom &&
+                        newCategory.RangeFrom <= existingCategory.RangeTo)
+                    {
+                        return false; // Overlaps with an existing category
+                    }
+                }
+                else if (newCategory.RangeFrom >= existingCategory.RangeFrom &&
+                         newCategory.RangeFrom <= existingCategory.RangeTo)
+                {
+                    return false; // Overlaps with an existing category
+                }
+            }
+
+            // Other validation rules, such as ensuring the minimum RangeFrom or maximum RangeTo, can be added here.
+
+            return true; // The new category is valid for insertion
+        }
         public bool IsCategoryValidForUpdate(List<CategoryDetailsDto> existingCategories, CategoryDetailsDto updatedCategory, CategoryDetailsDto existingCategory)
         {
             // Check if the updated category has the same RangeFrom and RangeTo values as the existing category

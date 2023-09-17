@@ -60,8 +60,34 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
             {
                 // Update the existing Category entity
                 existingCategoryEntity.CategoryName = request.UpdatedCategory.CategoryName;
-                existingCategoryEntity.RangeFrom = request.UpdatedCategory.RangeFrom;
-                existingCategoryEntity.RangeTo = request.UpdatedCategory.RangeTo; // Assign directly as decimal
+
+                // Check for updates in RangeFrom and RangeTo
+                if (existingCategoryEntity.RangeFrom != request.UpdatedCategory.RangeFrom)
+                {
+                    // Update RangeFrom
+                    existingCategoryEntity.RangeFrom = request.UpdatedCategory.RangeFrom;
+
+                    // Update RangeTo for the next category if it exists
+                    var nextCategory = existingCategories.FirstOrDefault(c => c.RangeFrom > request.UpdatedCategory.RangeFrom);
+                    if (nextCategory != null)
+                    {
+                        existingCategoryEntity.RangeTo = request.UpdatedCategory.RangeFrom - 0.01m;
+                    }
+                }
+
+                if (existingCategoryEntity.RangeTo != request.UpdatedCategory.RangeTo)
+                {
+                    // Update RangeTo
+                    existingCategoryEntity.RangeTo = request.UpdatedCategory.RangeTo;
+
+                    // Update RangeFrom for the previous category if it exists
+                    var previousCategory = existingCategories.FirstOrDefault(c => c.RangeTo < request.UpdatedCategory.RangeTo);
+                    if (previousCategory != null)
+                    {
+                        existingCategoryEntity.RangeFrom = request.UpdatedCategory.RangeTo + 0.01m;
+                    }
+                }
+
                 existingCategoryEntity.IconId = request.UpdatedCategory.IconId;
                 // You may also update the IconId if needed
 
