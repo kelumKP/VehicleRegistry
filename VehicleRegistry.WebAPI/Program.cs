@@ -7,7 +7,10 @@ using VehicleRegistry.Application.Icon.Queries.GetAllIcons;
 using VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer;
 using VehicleRegistry.Application.Manufacturer.Queries.GetAllManufacturers;
 using VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail;
+using VehicleRegistry.Application.VehicleDetail.Commands.DeleteVehicleDetail;
+using VehicleRegistry.Application.VehicleDetail.Commands.UpdateVehicleDetail;
 using VehicleRegistry.Application.VehicleDetail.Queries.GetAllVehiclesDetail;
+using VehicleRegistry.Application.VehicleDetail.Queries.GetVehicleDetailById;
 using VehicleRegistry.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,8 +75,9 @@ builder.Services.AddMediatR(typeof(CreateManufacturerCommand));
 
 builder.Services.AddMediatR(typeof(GetAllVehiclesDetailsQuery));
 builder.Services.AddMediatR(typeof(CreateVehicleDetailCommand));
-
-
+builder.Services.AddMediatR(typeof(GetVehicleDetailByIdQuery));
+builder.Services.AddMediatR(typeof(UpdateVehicleDetailCommand));
+builder.Services.AddMediatR(typeof(DeleteVehicleDetailCommand));
 
 var app = builder.Build();
 

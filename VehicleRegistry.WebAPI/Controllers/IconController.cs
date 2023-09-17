@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VehicleRegistry.Application.Category.Commands.CreateCategory;
 using VehicleRegistry.Application.Category.Queries.GetAllCategories;
+using VehicleRegistry.Application.Icon;
 using VehicleRegistry.Application.Icon.Commands.CreateIcon;
 using VehicleRegistry.Application.Icon.Queries.GetAllIcons;
 using VehicleRegistry.Core.Models;
@@ -28,7 +29,7 @@ namespace VehicleRegistry.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateIcon([FromBody] Icon icon)
+        public async Task<IActionResult> CreateIcon([FromBody] IconDto icon)
         {
             var command = new CreateIconCommand() { NewIcon = icon };
 

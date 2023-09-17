@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.Icon.Commands.CreateIcon
 {
-    public class CreateIconCommand : IRequest<Core.Models.Icon>
+    public class CreateIconCommand : IRequest<IconDto>
     {
-        public Core.Models.Icon NewIcon { get; set; }
+        public IconDto NewIcon { get; set; }
     }
 }

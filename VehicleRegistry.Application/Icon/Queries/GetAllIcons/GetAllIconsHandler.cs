@@ -10,16 +10,25 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Icon.Queries.GetAllIcons
 {
-    public class GetAllIconsHandler : IRequestHandler<GetAllIconsQuery, List<Core.Models.Icon>>
+    public class GetAllIconsHandler : IRequestHandler<GetAllIconsQuery, List<IconDto>>
     {
         private readonly DataContext _ctx;
         public GetAllIconsHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
-        public async Task<List<Core.Models.Icon>> Handle(GetAllIconsQuery request, CancellationToken cancellationToken)
+        public async Task<List<IconDto>> Handle(GetAllIconsQuery request, CancellationToken cancellationToken)
         {
-            return await _ctx.Icons.ToListAsync();
+            var icons = await _ctx.Icons
+                .Select(icon => new IconDto
+                {
+                    Id = icon.Id,
+                    Name = icon.Name,
+                    // Map other properties as needed
+                })
+                .ToListAsync();
+
+            return icons;
         }
     }
 }

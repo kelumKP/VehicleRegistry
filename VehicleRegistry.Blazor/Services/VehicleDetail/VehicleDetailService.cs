@@ -60,17 +60,38 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
             }
         }
 
-        public bool Delete(int id)
+        public Task<bool> Delete(int id)
         {
-            // Implement the Delete logic here
-            return true; // Replace with your logic
+            throw new NotImplementedException();
         }
 
-        public VehicleDetailDto FindById(int id)
+        public async Task<VehicleDetailDto> FindById(int id)
         {
-            // Implement the FindById logic here
-            // Return an instance of the Person class
-            return new VehicleDetailDto(); // Replace with actual data retrieval logic
+            try
+            {
+                // Make an HTTP GET request to the GetVehicleDetailById endpoint
+                var response = await _httpClient.GetAsync($"API/VehicleDetail/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Deserialize the response content into a VehicleDetailDto
+                    var result = await response.Content.ReadFromJsonAsync<VehicleDetailDto>();
+                    return result; // Return the deserialized data
+                }
+                else
+                {
+                    // Handle the error case, for example, log or throw an exception
+                    // You might want to return null or handle it differently based on your application's needs
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the HTTP request
+                // You might want to log the exception or throw it further up
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<List<VehicleDetailDto>> GetAllAsync()

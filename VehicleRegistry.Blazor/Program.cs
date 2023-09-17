@@ -7,11 +7,18 @@ using VehicleRegistry.Blazor.Services.VehicleDetail;
 using VehicleRegistry.Blazor.Services;
 using VehicleRegistry.Application.Category;
 using VehicleRegistry.Core.Models;
+using VehicleRegistry.Blazor.Services.Manufacturer;
+using VehicleRegistry.Blazor.Services.Category;
+using VehicleRegistry.Application.Manufacturer;
+using VehicleRegistry.Application.Icon;
+using VehicleRegistry.Blazor.Services.Icon;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddScoped<IBaseService<CategoryDetailsDto>, CategoryService>();
+builder.Services.AddScoped<IBaseService<ManufacturerDto>, ManufacturerService>();
+builder.Services.AddScoped<IBaseService<IconDto>, IconService>();
 builder.Services.AddScoped<IBaseService<VehicleDetailDto>, VehicleDetailService>();
-builder.Services.AddScoped<IBaseService<Manufacturer>, ManufacturerService>();
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 

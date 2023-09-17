@@ -12,7 +12,8 @@ namespace VehicleRegistry.Application.VehicleDetail
         public int VehicleDetailId { get; set; }
 
         [Required]
-        public string YearOfManufacture { get; set; }
+        [Range(1000, 3000, ErrorMessage = "Year of Manufacture must be between 1000 and 3000.")]
+        public int YearOfManufacture { get; set; }
 
         [Required]
         public string FirstName { get; set; }
@@ -27,8 +28,6 @@ namespace VehicleRegistry.Application.VehicleDetail
 
         [Required]
         public int ManufacturerId { get; set; }
-
-
 
     }
 }

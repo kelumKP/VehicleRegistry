@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.Icon.Queries.GetAllIcons
 {
-    public class GetAllIconsQuery : IRequest<List<Core.Models.Icon>>
+    public class GetAllIconsQuery : IRequest<List<IconDto>>
     {
     }
 }

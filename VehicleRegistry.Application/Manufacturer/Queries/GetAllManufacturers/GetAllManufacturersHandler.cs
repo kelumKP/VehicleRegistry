@@ -10,16 +10,27 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Manufacturer.Queries.GetAllManufacturers
 {
-    public class GetAllManufacturersHandler : IRequestHandler<GetAllManufacturersQuery, List<Core.Models.Manufacturer>>
+    public class GetAllManufacturersHandler : IRequestHandler<GetAllManufacturersQuery, List<ManufacturerDto>>
     {
         private readonly DataContext _ctx;
         public GetAllManufacturersHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
-        public async Task<List<Core.Models.Manufacturer>> Handle(GetAllManufacturersQuery request, CancellationToken cancellationToken)
+        public async Task<List<ManufacturerDto>> Handle(GetAllManufacturersQuery request, CancellationToken cancellationToken)
         {
-            return await _ctx.Manufacturers.ToListAsync();
+            // Use Select to project the Manufacturer entities into ManufacturerDto
+            var manufacturerDtos = await _ctx.Manufacturers
+                .Select(m => new ManufacturerDto
+                {
+                    // Map properties from the Manufacturer entity to the DTO
+                    Id = m.Id,
+                    NameOfManufacturer = m.NameOfManufacturer,
+                    // Add other properties as needed
+                })
+                .ToListAsync();
+
+            return manufacturerDtos;
         }
     }
 }

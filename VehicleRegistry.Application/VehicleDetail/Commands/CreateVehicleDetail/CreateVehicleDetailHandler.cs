@@ -20,28 +20,39 @@ namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
         }
         public async Task<VehicleDetailDto> Handle(CreateVehicleDetailCommand request, CancellationToken cancellationToken)
         {
-            // Create a new Owner entity from the provided FirstName
-            var owner = new Owner
+            // Check if an owner with the given FirstName and LastName exists
+            var existingOwner = await _ctx.Owners
+                .FirstOrDefaultAsync(o =>
+                    o.FirstName.ToLower() == request.NewVehicleDetail.FirstName.ToLower() &&
+                    o.LastName.ToLower() == request.NewVehicleDetail.LastName.ToLower());
+
+            int ownerId;
+
+            if (existingOwner != null)
             {
-                FirstName = request.NewVehicleDetail.FirstName,
-                LastName = request.NewVehicleDetail.LastName
-            };
+                // Owner with the same FirstName and LastName exists, use the existing owner's Id
+                ownerId = existingOwner.Id;
+            }
+            else
+            {
+                // Owner does not exist, create a new owner and get the Id
+                var newOwner = new Owner
+                {
+                    FirstName = request.NewVehicleDetail.FirstName,
+                    LastName = request.NewVehicleDetail.LastName
+                };
 
-            // Add the Owner entity to the context
-            _ctx.Owners.Add(owner);
+                _ctx.Owners.Add(newOwner);
+                await _ctx.SaveChangesAsync();
 
-            // Save changes to the database to get the generated OwnerId
-            await _ctx.SaveChangesAsync();
-
-            // Find the category where the weight falls within the range
-            var category = await _ctx.Categories
-                .FirstOrDefaultAsync(c => request.NewVehicleDetail.Weight >= c.RangeFrom && request.NewVehicleDetail.Weight <= c.RangeTo);
+                ownerId = newOwner.Id;
+            }
 
             // Create a new VehicleDetail entity
             var vehicleDetail = new Core.Models.VehicleDetail
             {
                 ManufacturerId = request.NewVehicleDetail.ManufacturerId,
-                OwnerId = owner.Id, // Assign the created owner's ID
+                OwnerId = ownerId, // Set the OwnerId with the retrieved or newly created owner's Id
                 Weight = request.NewVehicleDetail.Weight,
                 YearOfManufacture = request.NewVehicleDetail.YearOfManufacture
             };
@@ -56,8 +67,8 @@ namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
             var responseDto = new VehicleDetailDto
             {
                 VehicleDetailId = vehicleDetail.Id,
-                FirstName = owner.FirstName,
-                LastName = owner.LastName,
+                FirstName = request.NewVehicleDetail.FirstName,
+                LastName = request.NewVehicleDetail.LastName,
                 ManufacturerId = vehicleDetail.ManufacturerId,
                 Weight = vehicleDetail.Weight,
                 YearOfManufacture = vehicleDetail.YearOfManufacture

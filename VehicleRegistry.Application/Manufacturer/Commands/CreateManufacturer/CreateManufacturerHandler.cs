@@ -9,19 +9,38 @@ using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer
 {
-    public class CreateManufacturerHandler : IRequestHandler<CreateManufacturerCommand, Core.Models.Manufacturer>
+    public class CreateManufacturerHandler : IRequestHandler<CreateManufacturerCommand, ManufacturerDto>
     {
         private readonly DataContext _ctx;
         public CreateManufacturerHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
-        public async Task<Core.Models.Manufacturer> Handle(CreateManufacturerCommand request, CancellationToken cancellationToken)
+        public async Task<ManufacturerDto> Handle(CreateManufacturerCommand request, CancellationToken cancellationToken)
         {
-            _ctx.Manufacturers.Add(request.NewManufacturer);
+            // Create a new Manufacturer entity from the provided data
+            var newManufacturer = new Core.Models.Manufacturer
+            {
+                // Map properties from request.NewManufacturer to the new entity
+                NameOfManufacturer = request.NewManufacturer.NameOfManufacturer,
+                // Add other properties as needed
+            };
+
+            // Add the new Manufacturer entity to the context
+            _ctx.Manufacturers.Add(newManufacturer);
+
+            // Save changes to the database to get the generated ManufacturerId
             await _ctx.SaveChangesAsync();
 
-            return request.NewManufacturer;
+            // Create a ManufacturerDto from the newly created entity
+            var manufacturerDto = new ManufacturerDto
+            {
+                Id = newManufacturer.Id,
+                NameOfManufacturer = newManufacturer.NameOfManufacturer,
+                // Map other properties as needed
+            };
+
+            return manufacturerDto;
         }
     }
 }

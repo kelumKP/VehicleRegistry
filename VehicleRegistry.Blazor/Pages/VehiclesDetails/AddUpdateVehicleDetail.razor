@@ -5,8 +5,7 @@
 @inject IBaseService<VehicleDetailDto> vehicleDetailService
 @inject IJSRuntime jsRuntime
 @inject HttpClient Http
-@inject IBaseService<CategoryDetailsDto> categoryService
-@inject IBaseService<Manufacturer> manufacturerService
+@inject IBaseService<ManufacturerDto> manufacturerService
 
 <h3>@Title</h3>
 <a href="/vehiclesdetails" class="btn btn-outline-dark">Show All</a>
@@ -29,8 +28,8 @@
 
             <div class="form-group">
                 <label for="Name">Year of Manufacture</label>
-                <InputText class="form-control" @bind-Value="vehicleDetail.YearOfManufacture" />
-                <ValidationMessage For="@(()=>vehicleDetail.YearOfManufacture)" />
+                <InputNumber class="form-control" @bind-Value="vehicleDetail.YearOfManufacture" />
+                <ValidationMessage For="@(() => vehicleDetail.YearOfManufacture)" />
             </div>
 
             <div class="form-group">
@@ -69,15 +68,16 @@
     private string message = string.Empty;
     VehicleDetailDto vehicleDetail = new();
     private string Title = "Add Vehicle Detail";
-    private List<CategoryDetailsDto> categoryOptions = new List<CategoryDetailsDto>();
-    private List<Manufacturer> manufacturerOptions = new List<Manufacturer>();
+    private List<ManufacturerDto> manufacturerOptions = new List<ManufacturerDto>();
 
     private async Task Save()
     {
         message = "wait...";
+        bool isUpdate = vehicleDetail.VehicleDetailId > 0;
+
         if (await vehicleDetailService.AddUpdate(vehicleDetail))
         {
-            message = "Successfully added";
+            message = isUpdate ? "Successfully updated" : "New record added successfully";
             vehicleDetail = new VehicleDetailDto(); // Use new VehicleDetailDto() to create a new instance
         }
         else
@@ -91,7 +91,7 @@
         if (VehicleDetailId > 0)
         {
             Title = "Update Vehicle Detail";
-            vehicleDetail = vehicleDetailService.FindById(VehicleDetailId);
+            vehicleDetail = await vehicleDetailService.FindById(VehicleDetailId);
         }
 
         // Fetch the list of categories

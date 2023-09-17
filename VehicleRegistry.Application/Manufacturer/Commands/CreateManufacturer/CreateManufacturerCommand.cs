@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer
 {
-    public class CreateManufacturerCommand : IRequest<Core.Models.Manufacturer>
+    public class CreateManufacturerCommand : IRequest<ManufacturerDto>
     {
         public Core.Models.Manufacturer NewManufacturer { get; set; }
     }

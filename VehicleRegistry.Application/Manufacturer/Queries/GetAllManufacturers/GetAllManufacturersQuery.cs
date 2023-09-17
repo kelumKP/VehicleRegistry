@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.Manufacturer.Queries.GetAllManufacturers
 {
-    public class GetAllManufacturersQuery : IRequest<List<Core.Models.Manufacturer>>
+    public class GetAllManufacturersQuery : IRequest<List<ManufacturerDto>>
     {
     }
 }
