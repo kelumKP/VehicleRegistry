@@ -22,10 +22,11 @@ namespace VehicleRegistry.Application.Category.Queries.GetAllCategories
                         join icon in _ctx.Icons on category.IconId equals icon.Id into iconGroup
                         select new CategoryDetailsDto
                         {
-                            Id = category.Id,
+                            CategoryId = category.Id,
                             CategoryName = category.CategoryName,
                             RangeFrom = category.RangeFrom,
                             RangeTo = category.RangeTo,
+                            IconId = category.IconId,
                             Icon = iconGroup.FirstOrDefault() != null ? iconGroup.FirstOrDefault().Path : null // Check for null and then access Path
                         };
 

@@ -1,0 +1,99 @@
+﻿@page "/categories/add"
+@page "/categories/edit/{CategoryId:int}"
+@using Services
+@using Services.Category
+@inject IBaseService<CategoryDetailsDto> categoryService
+@inject IJSRuntime jsRuntime
+@inject HttpClient Http
+@inject IBaseService<IconDto> iconService
+
+<h3>@Title</h3>
+<a href="/categories" class="btn btn-outline-dark">Show All</a>
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="@categoryDetails" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="CategoryName">Category Name</label>
+                <InputText class="form-control" @bind-Value="categoryDetails.CategoryName" />
+                <ValidationMessage For="@(()=>categoryDetails.CategoryName)" />
+            </div>
+
+            <div class="form-group">
+                <label for="RangeFrom">Range From</label>
+                <InputNumber class="form-control" @bind-Value="categoryDetails.RangeFrom" />
+                <ValidationMessage For="@(() => categoryDetails.RangeFrom)" />
+            </div>
+
+            <div class="form-group">
+                <label for="RangeTo">Range To</label>
+                <InputNumber class="form-control" @bind-Value="categoryDetails.RangeTo" />
+                <ValidationMessage For="@(()=>categoryDetails.RangeTo)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Icon">Icon</label>
+                <InputSelect class="form-control" @bind-Value="categoryDetails.IconId">
+                    @foreach (var icon in iconOptions)
+                    {
+                        <option value="@icon.Id">@icon.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>categoryDetails.IconId)" />
+            </div>
+
+
+
+            <div class="my-2">
+                @message
+            </div>
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int CategoryId { get; set; }
+    private string message = string.Empty;
+    CategoryDetailsDto categoryDetails = new();
+    private string Title = "Add Category Detail";
+    private List<IconDto> iconOptions = new List<IconDto>();
+
+    private async Task Save()
+    {
+        message = "wait...";
+        bool isUpdate = categoryDetails.CategoryId > 0;
+
+        if (await categoryService.AddUpdate(categoryDetails))
+        {
+            message = isUpdate ? "Successfully updated" : "New record added successfully";
+            categoryDetails = new CategoryDetailsDto(); // Use new VehicleDetailDto() to create a new instance
+        }
+        else
+        {
+            message = "Could not save";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CategoryId > 0)
+        {
+            Title = "Update Category Detail";
+            categoryDetails = await categoryService.FindById(CategoryId);
+        }
+
+        // Fetch the list of categories
+        //categoryOptions = await categoryService.GetAllAsync();
+
+        // Fetch the list of categories
+        iconOptions = await iconService.GetAllAsync();
+
+        base.OnInitialized();
+    }
+}

@@ -1,5 +1,8 @@
 ﻿@page "/categories"
-
+@using Services
+@using Services.VehicleDetail
+@inject IBaseService<CategoryDetailsDto> categoryDetailService
+@inject IJSRuntime jsRuntime
 @inject HttpClient Http
 
 <h3>List of Categories</h3>
@@ -10,6 +13,8 @@
 }
 else
 {
+    <a href="/categories/add" class="btn btn-primary btn-sm">Add New</a>
+
     <table class="table">
         <thead>
             <tr>
@@ -18,17 +23,22 @@ else
                 <th>Weight From</th>
                 <th>Weight To</th>
                 <th>Icon</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var category in Categories)
             {
                 <tr>
-                    <td>@category.Id</td>
+                    <td>@category.CategoryId</td>
                     <td>@category.CategoryName </td>
                     <td>@category.RangeFrom </td>
                     <td>@category.RangeTo </td>
                     <td> <span>@(new MarkupString(category.Icon))</span></td>
+                    <td>
+                        <a href="/categories/edit/@category.CategoryId" class="btn btn-success btn-sm">Edit</a>
+                        <a class="btn btn-danger btn-sm" @onclick="async ()=> await Delete(category)">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -37,6 +47,19 @@ else
 
 @code {
     private List<CategoryDetailsDto> Categories;
+
+    private async Task Delete(CategoryDetailsDto categoryDetail)
+    {
+        bool confirmed = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure????");
+        if (confirmed)
+        {
+            if (await categoryDetailService.Delete(categoryDetail.CategoryId))
+            {
+                Categories.Remove(categoryDetail);
+            }
+
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

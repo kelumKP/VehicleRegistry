@@ -25,7 +25,7 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
             var existingCategories = _ctx.Categories
                 .Select(category => new CategoryDetailsDto
                 {
-                    Id = category.Id,
+                    CategoryId = category.Id,
                     CategoryName = category.CategoryName,
                     RangeFrom = category.RangeFrom,
                     RangeTo = category.RangeTo,
@@ -53,7 +53,7 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
                 // Map the Category entity to a CategoryDetailsDto
                 var categoryDto = new CategoryDetailsDto
                 {
-                    Id = newCategory.Id,
+                    CategoryId = newCategory.Id,
                     CategoryName = newCategory.CategoryName,
                     RangeFrom = newCategory.RangeFrom,
                     RangeTo = newCategory.RangeTo, // Assign directly as decimal

@@ -15,7 +15,7 @@ namespace VehicleRegistry.Application.Category.Services
                 updatedCategory.RangeTo == existingCategory.RangeTo)
             {
                 // It's valid if the updated category's Id matches the existing category's Id
-                return updatedCategory.Id == existingCategory.Id;
+                return updatedCategory.CategoryId == existingCategory.CategoryId;
             }
 
             // Check for gaps and overlaps

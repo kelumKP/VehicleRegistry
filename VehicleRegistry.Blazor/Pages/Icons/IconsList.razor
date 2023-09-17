@@ -24,7 +24,7 @@ else
                 <tr>
                     <td>@icon.Id</td>
                     <td>@icon.Name </td>
-                    <td> <span>@(new MarkupString(icon.Path))</span></td>
+                    <td> <span>@(new MarkupString(icon.Icon))</span></td>
                 </tr>
             }
         </tbody>
@@ -32,10 +32,10 @@ else
 }
 
 @code {
-    private List<Icon> Icons;
+    private List<IconDto> Icons;
 
     protected override async Task OnInitializedAsync()
     {
-        Icons = await Http.GetFromJsonAsync<List<Icon>>("API/Icon");
+        Icons = await Http.GetFromJsonAsync<List<IconDto>>("API/Icon");
     }
 }

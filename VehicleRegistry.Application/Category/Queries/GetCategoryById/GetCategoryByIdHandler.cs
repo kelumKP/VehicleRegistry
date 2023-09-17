@@ -26,10 +26,11 @@ namespace VehicleRegistry.Application.Category.Queries.GetCategoryById
                         where category.Id == categoryId
                         select new CategoryDetailsDto
                         {
-                            Id = category.Id,
+                            CategoryId = category.Id,
                             CategoryName = category.CategoryName,
                             RangeFrom = category.RangeFrom,
                             RangeTo = category.RangeTo,
+                            IconId = category.IconId,
                             Icon = iconGroup.FirstOrDefault() != null ? iconGroup.FirstOrDefault().Path : null
                         };
 

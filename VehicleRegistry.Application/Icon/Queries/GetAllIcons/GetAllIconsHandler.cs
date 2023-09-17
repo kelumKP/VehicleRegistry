@@ -24,6 +24,7 @@ namespace VehicleRegistry.Application.Icon.Queries.GetAllIcons
                 {
                     Id = icon.Id,
                     Name = icon.Name,
+                    Icon = icon.Path
                     // Map other properties as needed
                 })
                 .ToListAsync();

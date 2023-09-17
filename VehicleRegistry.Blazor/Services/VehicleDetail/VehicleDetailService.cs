@@ -60,9 +60,41 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
             }
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Make an HTTP DELETE request to the DeleteVehicleDetail endpoint
+                var response = await _httpClient.DeleteAsync($"API/VehicleDetail/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Check if the deletion was successful based on the HTTP status code (e.g., 204 No Content)
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        // Handle the case where the request was successful but the response status code is unexpected
+                        // You might want to return false or handle it differently based on your application's needs
+                        return false;
+                    }
+                }
+                else
+                {
+                    // Handle the error case, for example, log or throw an exception
+                    // You might want to return false or handle it differently based on your application's needs
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the HTTP request
+                // You might want to log the exception or throw it further up
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return false;
+            }
         }
 
         public async Task<VehicleDetailDto> FindById(int id)
