@@ -10,7 +10,7 @@ namespace VehicleRegistry.Core.Models
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }
-        public decimal RangeFrom { get; set; }
+        public decimal? RangeFrom { get; set; }
         public decimal? RangeTo { get; set; }
         public int IconId { get; set; }
 

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace VehicleRegistry.Application.Category.Commands.CreateCategory
 {
-    public class CreateCategoryCommand  : IRequest<Core.Models.Category>
+    public class CreateCategoryCommand  : IRequest<CategoryDetailsDto>
     {
-        public Core.Models.Category NewCategory {  get; set; }
+        public CategoryDetailsDto NewCategory {  get; set; }
     }
 }

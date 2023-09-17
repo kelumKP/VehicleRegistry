@@ -1,7 +1,10 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using VehicleRegistry.Application.Category.Commands.CreateCategory;
+using VehicleRegistry.Application.Category.Commands.DeleteCategory;
+using VehicleRegistry.Application.Category.Commands.UpdateCategory.VehicleRegistry.Application.Category.Commands.UpdateCategory;
 using VehicleRegistry.Application.Category.Queries.GetAllCategories;
+using VehicleRegistry.Application.Category.Services;
 using VehicleRegistry.Application.Icon.Commands.CreateIcon;
 using VehicleRegistry.Application.Icon.Queries.GetAllIcons;
 using VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer;
@@ -64,8 +67,12 @@ builder.Services.AddDbContext<DataContext>(options => {
     options.UseSqlServer(conn);
 });
 
+builder.Services.AddScoped<ICategoryValidationService, CategoryValidationService>();
+
 builder.Services.AddMediatR(typeof(GetAllCategoriesQuery));
 builder.Services.AddMediatR(typeof(CreateCategoryCommand));
+builder.Services.AddMediatR(typeof(DeleteCategoryCommand)); 
+builder.Services.AddMediatR(typeof(UpdateCategoryCommand));
 
 builder.Services.AddMediatR(typeof(GetAllIconsQuery));
 builder.Services.AddMediatR(typeof(CreateIconCommand));

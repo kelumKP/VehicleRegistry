@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using VehicleRegistry.Application.Category;
 using VehicleRegistry.Application.Category.Commands.CreateCategory;
 using VehicleRegistry.Application.Category.Queries.GetAllCategories;
 using VehicleRegistry.Core.Models;
@@ -26,7 +27,7 @@ namespace VehicleRegistry.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] Category category) 
+        public async Task<IActionResult> CreateCategory([FromBody] CategoryDetailsDto category) 
         {
             var command = new CreateCategoryCommand() { NewCategory = category };
             
