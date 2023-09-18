@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VehicleRegistry.Application.Helpers;
 
 namespace VehicleRegistry.Application.Category
 {
@@ -12,6 +13,9 @@ namespace VehicleRegistry.Application.Category
         [Required]
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+
+        [Required]
+        [RangeFromLessThanRangeTo]
         public decimal? RangeFrom { get; set; }
         public decimal? RangeTo { get; set; }
 
