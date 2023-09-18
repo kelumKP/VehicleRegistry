@@ -1,118 +1,95 @@
 ﻿using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using VehicleRegistry.DAL;
-using VehicleRegistry.Core.Models;
-using VehicleRegistry.Application.Category.Services;
 using VehicleRegistry.Application.Category;
+using VehicleRegistry.Application.Category.Commands.UpdateCategory;
 using VehicleRegistry.Application.Category.Commands.UpdateCategory.VehicleRegistry.Application.Category.Commands.UpdateCategory;
+using Microsoft.EntityFrameworkCore;
 
 namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
 {
     public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, CategoryDetailsDto>
     {
         private readonly DataContext _ctx;
-        private readonly ICategoryValidationService _categoryValidationService;
 
-        public UpdateCategoryHandler(DataContext ctx, ICategoryValidationService categoryValidationService)
+        public UpdateCategoryHandler(DataContext ctx)
         {
             _ctx = ctx;
-            _categoryValidationService = categoryValidationService;
         }
 
         public async Task<CategoryDetailsDto> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            // Find the existing Category entity by its Id
-            var existingCategoryEntity = await _ctx.Categories.FindAsync(request.CategoryId);
-            if (existingCategoryEntity == null)
-            {
-                // Handle the case where the existing category is not found
-                return null;
-            }
+            var categoryToUpdate = _ctx.Categories.SingleOrDefault(c => c.Id == request.CategoryId);
 
-            // Map the existing Category entity to a CategoryDetailsDto
-            var existingCategory = new CategoryDetailsDto
+            if (categoryToUpdate != null)
             {
-                CategoryId = existingCategoryEntity.Id,
-                CategoryName = existingCategoryEntity.CategoryName,
-                RangeFrom = existingCategoryEntity.RangeFrom,
-                RangeTo = existingCategoryEntity.RangeTo,
-                // Map other properties as needed
-            };
-
-            // Convert existing categories to CategoryDetailsDto
-            var existingCategories = _ctx.Categories
-                .Select(category => new CategoryDetailsDto
+                if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom) ||
+                   (categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo)) 
                 {
-                    CategoryId = category.Id,
-                    CategoryName = category.CategoryName,
-                    RangeFrom = category.RangeFrom,
-                    RangeTo = category.RangeTo,
-                    IconId = category.IconId,
-                    Icon = category.Icon != null ? category.Icon.Path : null
-                })
-                .ToList();
-
-            // Check if the updated category is valid
-            var isValid = _categoryValidationService.IsCategoryValidForUpdate(existingCategories, request.UpdatedCategory, existingCategory);
-
-            if (isValid)
-            {
-                // Update the existing Category entity
-                existingCategoryEntity.CategoryName = request.UpdatedCategory.CategoryName;
-
-                // Check for updates in RangeFrom and RangeTo
-                if (existingCategoryEntity.RangeFrom != request.UpdatedCategory.RangeFrom)
-                {
-                    // Update RangeFrom
-                    existingCategoryEntity.RangeFrom = request.UpdatedCategory.RangeFrom;
-
-                    // Update RangeTo for the next category if it exists
-                    var nextCategory = existingCategories.FirstOrDefault(c => c.RangeFrom > request.UpdatedCategory.RangeFrom);
-                    if (nextCategory != null)
+                    if (categoryToUpdate.RangeFrom == 0.01m) 
                     {
-                        existingCategoryEntity.RangeTo = request.UpdatedCategory.RangeFrom - 0.01m;
+                        var topNextItem = _ctx.Categories.Where(category => category.RangeFrom > 0.01m).OrderBy(category => category.RangeFrom).FirstOrDefault();
+                        topNextItem.RangeFrom = request.UpdatingCategory.RangeTo + 0.01m;
+                        categoryToUpdate.RangeTo = request.UpdatingCategory.RangeTo;
+                        await _ctx.SaveChangesAsync();
                     }
+                    else if (categoryToUpdate.RangeTo == null) 
+                    {
+                        var bottomNextItem = _ctx.Categories.Where(category => category.RangeFrom < categoryToUpdate.RangeFrom).OrderByDescending(category => category.RangeFrom).FirstOrDefault();
+                        bottomNextItem.RangeTo = request.UpdatingCategory.RangeFrom - 0.01m;
+                        categoryToUpdate.RangeFrom = request.UpdatingCategory.RangeFrom;
+                        await _ctx.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom) && (categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo)) 
+                        {
+                            var closestUpperItem = _ctx.Categories.Where(category => category.RangeFrom < categoryToUpdate.RangeFrom).OrderByDescending(category => category.RangeFrom).FirstOrDefault();
+                            closestUpperItem.RangeTo = request.UpdatingCategory.RangeFrom - 0.01m;
+                            categoryToUpdate.RangeFrom = request.UpdatingCategory.RangeFrom;
+
+                            var closestLowerItem = _ctx.Categories.Where(category => category.RangeFrom > categoryToUpdate.RangeFrom).OrderBy(category => category.RangeFrom).FirstOrDefault();
+                            closestLowerItem.RangeFrom = request.UpdatingCategory.RangeTo + 0.01m;
+                            categoryToUpdate.RangeTo = request.UpdatingCategory.RangeTo;
+                            
+                            await _ctx.SaveChangesAsync();
+
+                        }
+
+                        if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom)) 
+                        {
+                            var closestUpperItem = _ctx.Categories.Where(category => category.RangeFrom < categoryToUpdate.RangeFrom).OrderByDescending(category => category.RangeFrom).FirstOrDefault();
+                            closestUpperItem.RangeTo = request.UpdatingCategory.RangeFrom - 0.01m;
+                            categoryToUpdate.RangeFrom = request.UpdatingCategory.RangeFrom;
+                            await _ctx.SaveChangesAsync();
+                        }
+
+
+                        if ((categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo)) 
+                        {
+                            var closestLowerItem = _ctx.Categories.Where(category => category.RangeFrom > categoryToUpdate.RangeFrom).OrderBy(category => category.RangeFrom).FirstOrDefault();
+                            closestLowerItem.RangeFrom = request.UpdatingCategory.RangeTo + 0.01m;
+                            categoryToUpdate.RangeTo = request.UpdatingCategory.RangeTo;
+                            await _ctx.SaveChangesAsync();
+                        }
+
+                    }
+                    
+                }
+                if ((categoryToUpdate.CategoryName != request.UpdatingCategory.CategoryName) ||
+                   (categoryToUpdate.IconId != request.UpdatingCategory.IconId)) 
+                {
+                    categoryToUpdate.CategoryName = request.UpdatingCategory.CategoryName;  
+                    categoryToUpdate.IconId = request.UpdatingCategory.IconId;
+                    await _ctx.SaveChangesAsync();
                 }
 
-                if (existingCategoryEntity.RangeTo != request.UpdatedCategory.RangeTo)
-                {
-                    // Update RangeTo
-                    existingCategoryEntity.RangeTo = request.UpdatedCategory.RangeTo;
-
-                    // Update RangeFrom for the previous category if it exists
-                    var previousCategory = existingCategories.FirstOrDefault(c => c.RangeTo < request.UpdatedCategory.RangeTo);
-                    if (previousCategory != null)
-                    {
-                        existingCategoryEntity.RangeFrom = request.UpdatedCategory.RangeTo + 0.01m;
-                    }
-                }
-
-                existingCategoryEntity.IconId = request.UpdatedCategory.IconId;
-                // You may also update the IconId if needed
-
-                await _ctx.SaveChangesAsync();
-
-                // Map the updated Category entity to a CategoryDetailsDto
-                var updatedCategoryDto = new CategoryDetailsDto
-                {
-                    CategoryId = existingCategoryEntity.Id,
-                    CategoryName = existingCategoryEntity.CategoryName,
-                    RangeFrom = existingCategoryEntity.RangeFrom,
-                    RangeTo = existingCategoryEntity.RangeTo, // Assign directly as decimal
-                    Icon = request.UpdatedCategory.Icon, // Assuming Icon is a string in CategoryDetailsDto
-                    IconId = request.UpdatedCategory.IconId
-                };
-
-                return updatedCategoryDto;
             }
 
-            // Handle the case where the category update is not valid (e.g., overlaps with existing)
-            // You can return an appropriate response or throw an exception based on your needs
-
-            return null; // Return null if the category update is not valid
+            return null;
         }
 
     }
 }
-

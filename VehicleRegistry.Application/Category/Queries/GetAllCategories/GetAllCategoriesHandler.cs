@@ -20,6 +20,7 @@ namespace VehicleRegistry.Application.Category.Queries.GetAllCategories
         {
             var query = from category in _ctx.Categories
                         join icon in _ctx.Icons on category.IconId equals icon.Id into iconGroup
+                        orderby category.RangeFrom
                         select new CategoryDetailsDto
                         {
                             CategoryId = category.Id,

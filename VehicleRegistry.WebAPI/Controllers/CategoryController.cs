@@ -61,7 +61,7 @@ namespace VehicleRegistry.WebAPI.Controllers
             var command = new UpdateCategoryCommand
             {
                 CategoryId = id, // Make sure UpdateCategoryCommand has a CategoryId property
-                UpdatedCategory = updatedCategory
+                UpdatingCategory = updatedCategory
             };
 
             var result = await _mediator.Send(command);

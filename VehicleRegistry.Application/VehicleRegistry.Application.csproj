@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Category\Services\**" />
     <Compile Remove="Commands\**" />
     <Compile Remove="Handlers\**" />
+    <EmbeddedResource Remove="Category\Services\**" />
     <EmbeddedResource Remove="Commands\**" />
     <EmbeddedResource Remove="Handlers\**" />
+    <None Remove="Category\Services\**" />
     <None Remove="Commands\**" />
     <None Remove="Handlers\**" />
   </ItemGroup>

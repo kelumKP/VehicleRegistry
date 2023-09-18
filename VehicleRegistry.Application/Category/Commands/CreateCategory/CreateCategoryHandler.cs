@@ -1,98 +1,78 @@
 ﻿using MediatR;
 using VehicleRegistry.Application.Category.Commands.CreateCategory;
-using VehicleRegistry.Application.Category.Services;
 using VehicleRegistry.Application.Category;
 using VehicleRegistry.DAL;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using VehicleRegistry.Core.Models;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
+namespace VehicleRegistry.Application.Category.Commands.CreateCategory
 {
     public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, CategoryDetailsDto>
     {
         private readonly DataContext _ctx;
-        private readonly ICategoryValidationService _categoryValidationService;
 
-        public CreateCategoryHandler(DataContext ctx, ICategoryValidationService categoryValidationService)
+        public CreateCategoryHandler(DataContext ctx)
         {
             _ctx = ctx;
-            _categoryValidationService = categoryValidationService;
         }
 
         public async Task<CategoryDetailsDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-            // Convert existing categories to CategoryDetailsDto
-            var existingCategories = _ctx.Categories
-                .Select(category => new CategoryDetailsDto
-                {
-                    CategoryId = category.Id,
-                    CategoryName = category.CategoryName,
-                    RangeFrom = category.RangeFrom,
-                    RangeTo = category.RangeTo,
-                    Icon = category.Icon != null ? category.Icon.Path : null
-                })
-                .ToList();
-
-            // Find the maximum RangeTo value among existing categories
-            decimal? maxRangeTo = existingCategories.Max(c => c.RangeTo);
-
-            // Calculate the new RangeFrom value
-            decimal newRangeFrom = maxRangeTo != null ? maxRangeTo.Value + 0.01m : 0.01m;
-
-            // Check if the new category is valid
-            var isValid = _categoryValidationService.IsCategoryValidForInsert(existingCategories, request.NewCategory);
-
-            if (isValid)
+            if (request != null && request.NewCategory.CategoryId <= 0)
             {
-                // Create a new Category entity from the CategoryDetailsDto
+                if (request.NewCategory.RangeTo == null)
+                {
+                    var lastCategory = _ctx.Categories.Where(cat => cat.RangeTo == null).FirstOrDefault();
+
+                    if (lastCategory.RangeFrom < request.NewCategory.RangeFrom)
+                    {
+                        lastCategory.RangeTo = request.NewCategory.RangeFrom - 0.01m;
+                    }
+                }
+                if (request.NewCategory.RangeFrom == 0.01m)
+                {
+                    var firstCategory = _ctx.Categories.Where(cat => cat.RangeFrom == 0.01m).FirstOrDefault();
+
+                    if (firstCategory.RangeTo > request.NewCategory.RangeTo)
+                    {
+                        firstCategory.RangeFrom = request.NewCategory.RangeTo + 0.01m;
+                    }
+                }
+
                 var newCategory = new Core.Models.Category
                 {
                     CategoryName = request.NewCategory.CategoryName,
-                    RangeFrom = newRangeFrom,
+                    RangeFrom = request.NewCategory.RangeFrom,
                     RangeTo = request.NewCategory.RangeTo,
-                    IconId = 1 // Set the IconId as needed
+                    IconId = request.NewCategory.IconId
                 };
-
-                // Update RangeTo for the next category, if it exists
-                var nextCategory = existingCategories
-                    .Where(c => c.RangeFrom > newCategory.RangeTo)
-                    .OrderBy(c => c.RangeFrom)
-                    .FirstOrDefault();
-
-                if (nextCategory != null)
-                {
-                    newCategory.RangeTo = nextCategory.RangeFrom - 0.01m;
-                }
-                else
-                {
-                    // If there's no next category, set RangeTo to NULL
-                    newCategory.RangeTo = null;
-                }
 
                 _ctx.Categories.Add(newCategory);
                 await _ctx.SaveChangesAsync();
 
+                // Now that the new category is saved, let's retrieve it from the database
+                var savedCategory = await _ctx.Categories
+                    .FirstOrDefaultAsync(c => c.Id == newCategory.Id);
+
                 // Map the Category entity to a CategoryDetailsDto
                 var categoryDto = new CategoryDetailsDto
                 {
-                    CategoryId = newCategory.Id,
-                    CategoryName = newCategory.CategoryName,
-                    RangeFrom = newCategory.RangeFrom,
-                    RangeTo = newCategory.RangeTo,
-                    Icon = request.NewCategory.Icon // Assuming Icon is a string in CategoryDetailsDto
+                    CategoryId = savedCategory.Id,
+                    CategoryName = savedCategory.CategoryName,
+                    RangeFrom = savedCategory.RangeFrom,
+                    RangeTo = savedCategory.RangeTo,
+                    IconId = savedCategory.IconId // Assuming IconId is in CategoryDetailsDto
                 };
 
                 return categoryDto;
             }
 
-            // Handle the case where the category is not valid (e.g., overlaps with existing)
-            // You can return an appropriate response or throw an exception based on your needs
-
-            return null; // Return null if the category is not valid
+            return null;
+            
         }
     }
-
-
 }
-
-

@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using VehicleRegistry.Application.Category.Queries.GetAllCategories;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
@@ -30,7 +29,7 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
                 await _ctx.SaveChangesAsync();
 
                 // Rearrange the remaining categories
-                var remainingCategories = _ctx.Categories.ToList(); // Fetch all remaining categories
+                var remainingCategories = await _ctx.Categories.ToListAsync(); // Fetch all remaining categories
 
                 if (remainingCategories.Count > 0)
                 {
@@ -75,8 +74,7 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
                     await _ctx.SaveChangesAsync();
                 }
 
-                // Return true to indicate successful deletion
-                return true;
+                return true; // Return true to indicate successful deletion
             }
 
             // Return false to indicate that the category was not found and nothing was deleted
