@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -56,7 +57,7 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
                 }
 
                 // Check if the request was successful
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.OK)
                 {
                     return true;
                 }

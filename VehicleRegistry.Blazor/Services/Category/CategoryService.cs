@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -56,7 +57,7 @@ namespace VehicleRegistry.Blazor.Services.Category
                 }
 
                 // Check if the request was successful
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.OK)
                 {
                     return true;
                 }
@@ -91,7 +92,7 @@ namespace VehicleRegistry.Blazor.Services.Category
                 if (response.IsSuccessStatusCode)
                 {
                     // Check if the deletion was successful based on the HTTP status code (e.g., 204 No Content)
-                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    if (response.StatusCode == HttpStatusCode.NoContent)
                     {
                         return true;
                     }
