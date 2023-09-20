@@ -75,7 +75,10 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
 
                                 await _ctx.SaveChangesAsync();
                             }
-
+                            else
+                            {
+                                return null;
+                            }
                         }
 
                         if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom))
@@ -88,6 +91,10 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                                 categoryToUpdate.RangeFrom = request.UpdatingCategory.RangeFrom;
                                 await _ctx.SaveChangesAsync();
                             }
+                            else
+                            {
+                                return null;
+                            }
                         }
 
 
@@ -95,11 +102,15 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                         {
                             var closestLowerItem = _ctx.Categories.Where(category => category.RangeFrom > categoryToUpdate.RangeFrom).OrderBy(category => category.RangeFrom).FirstOrDefault();
 
-                            if (request.UpdatingCategory.RangeTo < closestLowerItem.RangeTo)
+                            if (request.UpdatingCategory.RangeTo < closestLowerItem.RangeTo || closestLowerItem.RangeTo == null)
                             {
                                 closestLowerItem.RangeFrom = request.UpdatingCategory.RangeTo + 0.01m;
                                 categoryToUpdate.RangeTo = request.UpdatingCategory.RangeTo;
                                 await _ctx.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                return null;
                             }
                         }
 

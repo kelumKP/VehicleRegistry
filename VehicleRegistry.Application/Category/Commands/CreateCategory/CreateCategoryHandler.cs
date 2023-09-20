@@ -42,6 +42,10 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
                     {
                         lastCategory.RangeTo = request.NewCategory.RangeFrom - 0.01m;
                     }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 if (request.NewCategory.RangeFrom == 0.01m)
                 {
@@ -50,6 +54,10 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
                     if (firstCategory.RangeTo > request.NewCategory.RangeTo)
                     {
                         firstCategory.RangeFrom = request.NewCategory.RangeTo + 0.01m;
+                    }
+                    else
+                    {
+                        return null;
                     }
                 }
 

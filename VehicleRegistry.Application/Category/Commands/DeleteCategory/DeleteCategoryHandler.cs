@@ -35,7 +35,10 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
             // Retrieve the category to be deleted from the database
             var categoryToDelete = await _ctx.Categories.FindAsync(request.CategoryId);
 
-            if (categoryToDelete != null)
+            // Rearrange the remaining categories
+            var beforeDeleteCategories = await _ctx.Categories.ToListAsync();
+
+            if (categoryToDelete != null && beforeDeleteCategories.Count > 1)
             {
                 // Delete the category
                 _ctx.Categories.Remove(categoryToDelete);

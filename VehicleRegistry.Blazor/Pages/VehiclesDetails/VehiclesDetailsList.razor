@@ -61,6 +61,9 @@ else
             if (await vehicleDetailService.Delete(vehicleDetail.VehicleDetailId))
             {
                 VehiclesDetails.Remove(vehicleDetail);
+
+                // Refresh the page
+                await jsRuntime.InvokeVoidAsync("location.reload");
             }
 
         }
