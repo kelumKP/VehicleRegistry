@@ -28,9 +28,7 @@ This project consists of a Web API and a Blazor web application for managing veh
   - [Prerequisites](#prerequisites)
   - [Running the Application](#running-the-application)
 - [API Endpoints](#api-endpoints)
-- [Blazor Application](#blazor-application)
-- [Unit Tests](#unit-tests)
-- [License](#license)
+
 
 ## Project Structure
 
@@ -52,7 +50,7 @@ This project consists of a Web API and a Blazor web application for managing veh
 1. Clone this repository to your local machine.
 
    ```shell
-   git clone https://github.com/kelumkp/vehicle-registry.git
+   git clone https://github.com/kelumKP/VehicleRegistry.git
 
 ## API Endpoints
 
