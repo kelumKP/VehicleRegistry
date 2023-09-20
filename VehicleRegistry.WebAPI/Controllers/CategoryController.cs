@@ -1,14 +1,19 @@
-﻿using MediatR;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using VehicleRegistry.Application.Category;
 using VehicleRegistry.Application.Category.Commands.CreateCategory;
 using VehicleRegistry.Application.Category.Commands.DeleteCategory;
 using VehicleRegistry.Application.Category.Commands.UpdateCategory;
-using VehicleRegistry.Application.Category.Commands.UpdateCategory.VehicleRegistry.Application.Category.Commands.UpdateCategory;
 using VehicleRegistry.Application.Category.Queries.GetAllCategories;
 using VehicleRegistry.Application.Category.Queries.GetCategoryById;
-using VehicleRegistry.Core.Models;
 
 namespace VehicleRegistry.WebAPI.Controllers
 {
@@ -23,6 +28,11 @@ namespace VehicleRegistry.WebAPI.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Get a category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve.</param>
+        /// <returns>The category details if found, or NotFound if not.</returns>
         [HttpGet("{id}", Name = "GetCategoryById")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
@@ -37,14 +47,23 @@ namespace VehicleRegistry.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Get all categories.
+        /// </summary>
+        /// <returns>A list of all categories.</returns>
         [HttpGet(Name = "GetAllCategories")]
-        public async Task<IActionResult> GetGetAllCategories()
+        public async Task<IActionResult> GetAllCategories()
         {
             var result = await _mediator.Send(new GetAllCategoriesQuery());
 
             return Ok(result);
         }
 
+        /// <summary>
+        /// Create a new category.
+        /// </summary>
+        /// <param name="category">The category details to create.</param>
+        /// <returns>The created category details.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryDetailsDto category)
         {
@@ -55,6 +74,12 @@ namespace VehicleRegistry.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Update an existing category by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to update.</param>
+        /// <param name="updatedCategory">The updated category details.</param>
+        /// <returns>The updated category details if found, or NotFound if not.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryDetailsDto updatedCategory)
         {
@@ -74,6 +99,11 @@ namespace VehicleRegistry.WebAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Delete a category by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to delete.</param>
+        /// <returns>NoContent if successful, or NotFound if the category was not found.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {

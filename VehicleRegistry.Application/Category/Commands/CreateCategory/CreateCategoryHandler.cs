@@ -1,16 +1,20 @@
-﻿using MediatR;
-using VehicleRegistry.Application.Category.Commands.CreateCategory;
-using VehicleRegistry.Application.Category;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using VehicleRegistry.DAL;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using VehicleRegistry.Core.Models;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace VehicleRegistry.Application.Category.Commands.CreateCategory
 {
+    /// <summary>
+    /// Represents a handler for creating a new category.
+    /// </summary>
     public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, CategoryDetailsDto>
     {
         private readonly DataContext _ctx;
@@ -20,6 +24,12 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Handles the command to create a new category.
+        /// </summary>
+        /// <param name="request">The create category command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="CategoryDetailsDto"/> representing the newly created category.</returns>
         public async Task<CategoryDetailsDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             if (request != null && request.NewCategory.CategoryId <= 0)
@@ -72,7 +82,7 @@ namespace VehicleRegistry.Application.Category.Commands.CreateCategory
             }
 
             return null;
-            
         }
     }
 }
+

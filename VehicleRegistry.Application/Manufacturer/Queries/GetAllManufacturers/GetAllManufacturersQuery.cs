@@ -1,13 +1,20 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 
 namespace VehicleRegistry.Application.Manufacturer.Queries.GetAllManufacturers
 {
+    /// <summary>
+    /// Represents a query to retrieve all manufacturers.
+    /// </summary>
     public class GetAllManufacturersQuery : IRequest<List<ManufacturerDto>>
     {
     }
 }
+

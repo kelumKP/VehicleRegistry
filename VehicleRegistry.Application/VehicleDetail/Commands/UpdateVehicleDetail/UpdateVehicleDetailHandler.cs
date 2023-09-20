@@ -1,21 +1,36 @@
-﻿using MediatR;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
-using VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer;
 using VehicleRegistry.Core.Models;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.VehicleDetail.Commands.UpdateVehicleDetail
 {
+    /// <summary>
+    /// Handler for updating a vehicle detail.
+    /// </summary>
     internal class UpdateVehicleDetailHandler : IRequestHandler<UpdateVehicleDetailCommand, VehicleDetailDto>
     {
         private readonly DataContext _ctx;
+
         public UpdateVehicleDetailHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Handles the command to update a vehicle detail.
+        /// </summary>
+        /// <param name="request">The command request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="VehicleDetailDto"/> representing the updated vehicle detail.</returns>
         public async Task<VehicleDetailDto> Handle(UpdateVehicleDetailCommand request, CancellationToken cancellationToken)
         {
             // Find the existing VehicleDetail entity by its Id

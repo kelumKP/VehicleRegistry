@@ -1,21 +1,35 @@
-﻿using MediatR;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Category.Queries.GetAllCategories
 {
+    /// <summary>
+    /// Handler for retrieving all category details.
+    /// </summary>
     public class GetAllCategoriesHandler : IRequestHandler<GetAllCategoriesQuery, List<CategoryDetailsDto>>
     {
         private readonly DataContext _ctx;
+
         public GetAllCategoriesHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
+
+        /// <summary>
+        /// Handles the query to retrieve all category details.
+        /// </summary>
+        /// <param name="request">The query request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A list of <see cref="CategoryDetailsDto"/> representing all category details.</returns>
         public async Task<List<CategoryDetailsDto>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
             var query = from category in _ctx.Categories

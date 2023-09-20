@@ -1,22 +1,35 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Category.Queries.GetCategoryById
 {
+    /// <summary>
+    /// Handler for retrieving category details by ID.
+    /// </summary>
     public class GetCategoryByIdHandler : IRequestHandler<GetCategoryByIdQuery, CategoryDetailsDto>
     {
         private readonly DataContext _ctx;
+
         public GetCategoryByIdHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Handles the query to retrieve category details by ID.
+        /// </summary>
+        /// <param name="request">The query request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="CategoryDetailsDto"/> representing the category details.</returns>
         public async Task<CategoryDetailsDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             var categoryId = request.CategoryId;

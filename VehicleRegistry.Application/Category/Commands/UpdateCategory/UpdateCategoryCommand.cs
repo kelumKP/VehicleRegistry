@@ -1,18 +1,29 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 
 namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
 {
-    namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
+    /// <summary>
+    /// Represents a command to update a category.
+    /// </summary>
+    public class UpdateCategoryCommand : IRequest<CategoryDetailsDto>
     {
-        public class UpdateCategoryCommand : IRequest<CategoryDetailsDto>
-        {
-            public int CategoryId { get; set; } // Add this property
-            public CategoryDetailsDto UpdatingCategory { get; set; }
-        }
+        /// <summary>
+        /// Gets or sets the ID of the category to update.
+        /// </summary>
+        public int CategoryId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the updated category data.
+        /// </summary>
+        public CategoryDetailsDto UpdatingCategory { get; set; }
     }
 }
+

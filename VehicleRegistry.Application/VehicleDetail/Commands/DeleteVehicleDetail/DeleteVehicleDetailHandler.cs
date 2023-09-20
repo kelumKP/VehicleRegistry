@@ -1,13 +1,19 @@
-﻿using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using VehicleRegistry.Application.VehicleDetail.Commands.DeleteVehicleDetail;
-using VehicleRegistry.DAL;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
 
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
+using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.VehicleDetail.Commands.DeleteVehicleDetail
 {
+    /// <summary>
+    /// Handler for deleting a vehicle detail.
+    /// </summary>
     public class DeleteVehicleDetailHandler : IRequestHandler<DeleteVehicleDetailCommand, bool>
     {
         private readonly DataContext _ctx;
@@ -17,6 +23,12 @@ namespace VehicleRegistry.Application.VehicleDetail.Commands.DeleteVehicleDetail
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Handles the command to delete a vehicle detail by its identifier.
+        /// </summary>
+        /// <param name="request">The command request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>True if the delete operation is successful; otherwise, false.</returns>
         public async Task<bool> Handle(DeleteVehicleDetailCommand request, CancellationToken cancellationToken)
         {
             try

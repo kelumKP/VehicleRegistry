@@ -1,4 +1,13 @@
-﻿using System;
+﻿#region File Header
+// ********************************************************************************************************************
+// File: CategoryService.cs
+// By: Kelum
+// Copyright (c) [Year] Your Company
+// MIT License
+// ********************************************************************************************************************
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -18,6 +27,11 @@ namespace VehicleRegistry.Blazor.Services.Category
             _httpClient = httpClient;
         }
 
+        /// <summary>
+        /// Adds or updates a category.
+        /// </summary>
+        /// <param name="category">The category to add or update.</param>
+        /// <returns>True if the operation was successful, otherwise false.</returns>
         public async Task<bool> AddUpdate(CategoryDetailsDto category)
         {
             try
@@ -62,6 +76,11 @@ namespace VehicleRegistry.Blazor.Services.Category
             }
         }
 
+        /// <summary>
+        /// Deletes a category by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to delete.</param>
+        /// <returns>True if the deletion was successful, otherwise false.</returns>
         public async Task<bool> Delete(int id)
         {
             try
@@ -99,6 +118,11 @@ namespace VehicleRegistry.Blazor.Services.Category
             }
         }
 
+        /// <summary>
+        /// Finds a category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to find.</param>
+        /// <returns>The found category or null if not found.</returns>
         public async Task<CategoryDetailsDto> FindById(int id)
         {
             try
@@ -128,6 +152,10 @@ namespace VehicleRegistry.Blazor.Services.Category
             }
         }
 
+        /// <summary>
+        /// Gets a list of all categories.
+        /// </summary>
+        /// <returns>A list of category details or an empty list if none found.</returns>
         public async Task<List<CategoryDetailsDto>> GetAllAsync()
         {
             try
@@ -158,4 +186,3 @@ namespace VehicleRegistry.Blazor.Services.Category
         }
     }
 }
-

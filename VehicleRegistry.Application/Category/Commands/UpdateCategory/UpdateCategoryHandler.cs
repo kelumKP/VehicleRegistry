@@ -1,12 +1,13 @@
-﻿using MediatR;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using VehicleRegistry.DAL;
-using VehicleRegistry.Application.Category;
-using VehicleRegistry.Application.Category.Commands.UpdateCategory;
-using VehicleRegistry.Application.Category.Commands.UpdateCategory.VehicleRegistry.Application.Category.Commands.UpdateCategory;
-using Microsoft.EntityFrameworkCore;
 
 namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
 {
@@ -26,9 +27,9 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
             if (categoryToUpdate != null)
             {
                 if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom) ||
-                   (categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo)) 
+                   (categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo))
                 {
-                    if (categoryToUpdate.RangeFrom == 0.01m) 
+                    if (categoryToUpdate.RangeFrom == 0.01m)
                     {
                         var topNextItem = _ctx.Categories.Where(category => category.RangeFrom > 0.01m).OrderBy(category => category.RangeFrom).FirstOrDefault();
                         if ((request.UpdatingCategory.RangeTo < topNextItem.RangeTo))
@@ -37,15 +38,15 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                             categoryToUpdate.RangeTo = request.UpdatingCategory.RangeTo;
                             await _ctx.SaveChangesAsync();
                         }
-                        else 
+                        else
                         {
                             return null;
                         }
                     }
-                    else if (categoryToUpdate.RangeTo == null) 
+                    else if (categoryToUpdate.RangeTo == null)
                     {
                         var bottomNextItem = _ctx.Categories.Where(category => category.RangeFrom < categoryToUpdate.RangeFrom).OrderByDescending(category => category.RangeFrom).FirstOrDefault();
-                        if ((request.UpdatingCategory.RangeFrom > bottomNextItem.RangeFrom)) 
+                        if ((request.UpdatingCategory.RangeFrom > bottomNextItem.RangeFrom))
                         {
                             bottomNextItem.RangeTo = request.UpdatingCategory.RangeFrom - 0.01m;
                             categoryToUpdate.RangeFrom = request.UpdatingCategory.RangeFrom;
@@ -58,12 +59,12 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                     }
                     else
                     {
-                        if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom) && (categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo)) 
+                        if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom) && (categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo))
                         {
                             var closestUpperItem = _ctx.Categories.Where(category => category.RangeFrom < categoryToUpdate.RangeFrom).OrderByDescending(category => category.RangeFrom).FirstOrDefault();
                             var closestLowerItem = _ctx.Categories.Where(category => category.RangeFrom > categoryToUpdate.RangeFrom).OrderBy(category => category.RangeFrom).FirstOrDefault();
 
-                            if (request.UpdatingCategory.RangeFrom > closestUpperItem.RangeFrom && request.UpdatingCategory.RangeTo < closestLowerItem.RangeTo) 
+                            if (request.UpdatingCategory.RangeFrom > closestUpperItem.RangeFrom && request.UpdatingCategory.RangeTo < closestLowerItem.RangeTo)
                             {
                                 closestUpperItem.RangeTo = request.UpdatingCategory.RangeFrom - 0.01m;
                                 categoryToUpdate.RangeFrom = request.UpdatingCategory.RangeFrom;
@@ -74,14 +75,10 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
 
                                 await _ctx.SaveChangesAsync();
                             }
-                            else
-                            {
-                                return null;
-                            }
 
                         }
 
-                        if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom)) 
+                        if ((categoryToUpdate.RangeFrom != request.UpdatingCategory.RangeFrom))
                         {
                             var closestUpperItem = _ctx.Categories.Where(category => category.RangeFrom < categoryToUpdate.RangeFrom).OrderByDescending(category => category.RangeFrom).FirstOrDefault();
 
@@ -91,14 +88,10 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                                 categoryToUpdate.RangeFrom = request.UpdatingCategory.RangeFrom;
                                 await _ctx.SaveChangesAsync();
                             }
-                            else
-                            {
-                                return null;
-                            }
                         }
 
 
-                        if ((categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo)) 
+                        if ((categoryToUpdate.RangeTo != request.UpdatingCategory.RangeTo))
                         {
                             var closestLowerItem = _ctx.Categories.Where(category => category.RangeFrom > categoryToUpdate.RangeFrom).OrderBy(category => category.RangeFrom).FirstOrDefault();
 
@@ -108,14 +101,10 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                                 categoryToUpdate.RangeTo = request.UpdatingCategory.RangeTo;
                                 await _ctx.SaveChangesAsync();
                             }
-                            else
-                            {
-                                return null;
-                            }
                         }
 
                     }
-                    
+
                 }
                 if ((categoryToUpdate.CategoryName != request.UpdatingCategory.CategoryName) ||
                    (categoryToUpdate.IconId != request.UpdatingCategory.IconId))
@@ -123,10 +112,6 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                     categoryToUpdate.CategoryName = request.UpdatingCategory.CategoryName;
                     categoryToUpdate.IconId = request.UpdatingCategory.IconId;
                     await _ctx.SaveChangesAsync();
-                }
-                else 
-                {
-                    return null;
                 }
 
                 // Map the updated category to CategoryDetailsDto
@@ -147,3 +132,4 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
 
     }
 }
+

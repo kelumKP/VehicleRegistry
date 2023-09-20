@@ -1,13 +1,20 @@
-﻿using MediatR;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
 {
+    /// <summary>
+    /// Represents a handler for deleting a category.
+    /// </summary>
     public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, bool>
     {
         private readonly DataContext _ctx;
@@ -17,6 +24,12 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Handles the deletion of a category.
+        /// </summary>
+        /// <param name="request">The delete category command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>True if the category was successfully deleted; otherwise, false.</returns>
         public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
             // Retrieve the category to be deleted from the database
@@ -80,6 +93,5 @@ namespace VehicleRegistry.Application.Category.Commands.DeleteCategory
             // Return false to indicate that the category was not found and nothing was deleted
             return false;
         }
-
     }
 }

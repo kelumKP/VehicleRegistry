@@ -1,22 +1,35 @@
-﻿using MediatR;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VehicleRegistry.Application.Icon.Queries.GetAllIcons;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Manufacturer.Queries.GetAllManufacturers
 {
+    /// <summary>
+    /// Handler for retrieving all manufacturers.
+    /// </summary>
     public class GetAllManufacturersHandler : IRequestHandler<GetAllManufacturersQuery, List<ManufacturerDto>>
     {
         private readonly DataContext _ctx;
+
         public GetAllManufacturersHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
+
+        /// <summary>
+        /// Handles the query to retrieve all manufacturers.
+        /// </summary>
+        /// <param name="request">The query request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A list of <see cref="ManufacturerDto"/> representing all manufacturers.</returns>
         public async Task<List<ManufacturerDto>> Handle(GetAllManufacturersQuery request, CancellationToken cancellationToken)
         {
             // Use Select to project the Manufacturer entities into ManufacturerDto

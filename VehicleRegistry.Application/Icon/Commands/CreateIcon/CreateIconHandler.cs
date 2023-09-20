@@ -1,21 +1,34 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VehicleRegistry.Application.Category.Commands.CreateCategory;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Icon.Commands.CreateIcon
 {
+    /// <summary>
+    /// Handler for creating a new icon.
+    /// </summary>
     public class CreateIconHandler : IRequestHandler<CreateIconCommand, IconDto>
     {
         private readonly DataContext _ctx;
+
         public CreateIconHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
+
+        /// <summary>
+        /// Handles the command to create a new icon.
+        /// </summary>
+        /// <param name="request">The command request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An <see cref="IconDto"/> representing the newly created icon.</returns>
         public async Task<IconDto> Handle(CreateIconCommand request, CancellationToken cancellationToken)
         {
             // Create a new Icon entity from the provided data

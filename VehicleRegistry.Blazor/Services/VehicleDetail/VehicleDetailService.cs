@@ -1,10 +1,20 @@
-﻿using System;
-using VehicleRegistry.Application.Category;
-using VehicleRegistry.Application.VehicleDetail;
-using static System.Net.WebRequestMethods;
+﻿#region File Header
+// ********************************************************************************************************************
+// File: VehicleDetailService.cs
+// By: Kelum
+// Copyright (c) [Year] Your Company
+// MIT License
+// ********************************************************************************************************************
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using VehicleRegistry.Application.VehicleDetail;
 
 namespace VehicleRegistry.Blazor.Services.VehicleDetail
 {
@@ -16,6 +26,12 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
         {
             _httpClient = httpClient;
         }
+
+        /// <summary>
+        /// Adds or updates a vehicle detail.
+        /// </summary>
+        /// <param name="vehicleDetail">The vehicle detail to add or update.</param>
+        /// <returns>True if the operation was successful; otherwise, false.</returns>
         public async Task<bool> AddUpdate(VehicleDetailDto vehicleDetail)
         {
             try
@@ -60,6 +76,11 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
             }
         }
 
+        /// <summary>
+        /// Deletes a vehicle detail by ID.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle detail to delete.</param>
+        /// <returns>True if the operation was successful; otherwise, false.</returns>
         public async Task<bool> Delete(int id)
         {
             try
@@ -97,6 +118,11 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
             }
         }
 
+        /// <summary>
+        /// Finds a vehicle detail by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle detail to find.</param>
+        /// <returns>The found vehicle detail or null if not found.</returns>
         public async Task<VehicleDetailDto> FindById(int id)
         {
             try
@@ -126,6 +152,10 @@ namespace VehicleRegistry.Blazor.Services.VehicleDetail
             }
         }
 
+        /// <summary>
+        /// Gets a list of all vehicle details.
+        /// </summary>
+        /// <returns>A list of vehicle detail items or an empty list if none found.</returns>
         public async Task<List<VehicleDetailDto>> GetAllAsync()
         {
             try

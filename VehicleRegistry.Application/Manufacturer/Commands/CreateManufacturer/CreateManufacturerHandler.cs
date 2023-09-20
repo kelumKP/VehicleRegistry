@@ -1,21 +1,36 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
-using VehicleRegistry.Application.Icon.Commands.CreateIcon;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer
 {
+    /// <summary>
+    /// Handler for creating a new manufacturer.
+    /// </summary>
     public class CreateManufacturerHandler : IRequestHandler<CreateManufacturerCommand, ManufacturerDto>
     {
         private readonly DataContext _ctx;
+
         public CreateManufacturerHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
+
+        /// <summary>
+        /// Handles the command to create a new manufacturer.
+        /// </summary>
+        /// <param name="request">The command request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="ManufacturerDto"/> representing the newly created manufacturer.</returns>
         public async Task<ManufacturerDto> Handle(CreateManufacturerCommand request, CancellationToken cancellationToken)
         {
             // Create a new Manufacturer entity from the provided data
@@ -44,3 +59,4 @@ namespace VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer
         }
     }
 }
+

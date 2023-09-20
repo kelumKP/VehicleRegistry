@@ -1,23 +1,36 @@
-﻿using MediatR;
+﻿#region File Ownership
+// File Ownership: Kelum
+#endregion
+
+#region File Copyright
+// File Copyright: MIT license
+#endregion
+
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VehicleRegistry.Application.Manufacturer.Commands.CreateManufacturer;
 using VehicleRegistry.Core.Models;
 using VehicleRegistry.DAL;
 
 namespace VehicleRegistry.Application.VehicleDetail.Commands.CreateVehicleDetail
 {
+    /// <summary>
+    /// Handler for creating a new vehicle detail.
+    /// </summary>
     internal class CreateVehicleDetailHandler : IRequestHandler<CreateVehicleDetailCommand, VehicleDetailDto>
     {
         private readonly DataContext _ctx;
+
         public CreateVehicleDetailHandler(DataContext ctx)
         {
             _ctx = ctx;
         }
+
+        /// <summary>
+        /// Handles the command to create a new vehicle detail.
+        /// </summary>
+        /// <param name="request">The command request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="VehicleDetailDto"/> representing the newly created vehicle detail.</returns>
         public async Task<VehicleDetailDto> Handle(CreateVehicleDetailCommand request, CancellationToken cancellationToken)
         {
             // Check if an owner with the given FirstName and LastName exists
