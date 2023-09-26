@@ -32,7 +32,7 @@ namespace VehicleRegistry.Application.Category.Commands.UpdateCategory
                     if (categoryToUpdate.RangeFrom == 0.01m)
                     {
                         var topNextItem = _ctx.Categories.Where(category => category.RangeFrom > 0.01m).OrderBy(category => category.RangeFrom).FirstOrDefault();
-                        if ((request.UpdatingCategory.RangeTo < topNextItem.RangeTo))
+                        if ((request.UpdatingCategory.RangeTo < topNextItem.RangeTo || topNextItem.RangeTo == null))
                         {
                             topNextItem.RangeFrom = request.UpdatingCategory.RangeTo + 0.01m;
                             categoryToUpdate.RangeTo = request.UpdatingCategory.RangeTo;
